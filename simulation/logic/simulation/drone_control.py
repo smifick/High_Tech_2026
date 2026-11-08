@@ -24,6 +24,7 @@ class Telemetry:
 class DroneControl:
     def __init__(self, drone: "Drone"):
         self.drone = drone
+        self._motion = None
 
     def get_telemetry(self) -> Telemetry:
         x, y, z = self.drone.position
@@ -70,6 +71,78 @@ class DroneControl:
             self.drone.position = pos
             self.drone.fleet.step()
         self.drone.armed = False
+        return self.get_telemetry()
+
+    @property
+    def moving(self):
+        return self._motion is not None
+
+    def navigate(self, x=0.0, y=0.0, z=0.0, speed=0.6,
+                 frame_id="map", auto_arm=False):
+        if not math.isfinite(speed) or speed <= 0:
+            raise ValueError("speed must be finite and positive")
+        if frame_id not in ("map", "body"):
+            raise ValueError("frame_id must be 'map' or 'body'")
+
+        start = self.drone.position.copy()
+        target = np.array([x, y, z], dtype=float)
+
+        if not np.all(np.isfinite(target)):
+            raise ValueError("Target coordinates must be finite")
+
+        if frame_id == "body":
+            target = start + target
+
+        if target[2] < 0.15:
+            raise ValueError(
+                "Target altitude must be >= 0.15 m; use land() to descend"
+            )
+
+        if auto_arm:
+            self.drone.armed = True
+        if not self.drone.armed:
+            raise RuntimeError(
+                "Drone is not armed: use auto_arm=True on first command"
+            )
+
+        distance = float(np.linalg.norm(target - start))
+
+        if distance == 0:
+            self._motion = None
+            return self.get_telemetry()
+
+        steps = max(
+            1,
+            math.ceil(distance / (speed * self.drone.fleet.dt)),
+        )
+
+        self._motion = {
+            "start": start,
+            "target": target,
+            "steps": steps,
+            "step": 0,
+        }
+
+        return self.get_telemetry()
+
+    def _update_motion(self):
+        if self._motion is None:
+            return
+
+        motion = self._motion
+        motion["step"] += 1
+        alpha = min(1.0, motion["step"] / motion["steps"])
+
+        self.drone.position = (
+                motion["start"]
+                + alpha * (motion["target"] - motion["start"])
+        )
+
+        if motion["step"] >= motion["steps"]:
+            self._motion = None
+
+    def stop(self):
+        self._motion = None
         return self.get_telemetry()
 
 
@@ -154,3 +227,15 @@ class DroneFleet:
 
     def __exit__(self, *args):
         self.close()
+
+    def step(self):
+        for drone in self.drones:
+            drone.control._update_motion()
+
+        mujoco.mj_step(self.model, self.data)
+
+        if self.viewer is not None and self.viewer.is_running():
+            self.viewer.sync()
+
+        if self.realtime:
+            time.sleep(self.dt)
