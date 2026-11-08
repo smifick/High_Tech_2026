@@ -1,0 +1,9 @@
+# Укажите абсолютный путь к своему датасету.
+path: /absolute/path/to/dataset
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: box_ok
+  1: box_damaged
+  2: foreign_object

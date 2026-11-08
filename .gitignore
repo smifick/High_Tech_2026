@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+runs/
+attempts/
+frames/
+dataset/
+*.pt
+*.onnx
+*.engine
+.pytest_cache/
+.DS_Store

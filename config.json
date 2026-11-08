@@ -1,0 +1,9 @@
+{
+  "aruco_dictionary": "DICT_4X4_250",
+  "slot_roi": [1.2, -0.5, 5.2, 3.5],
+  "confidence": 0.65,
+  "empty_observations": 3,
+  "allow_empty": false,
+  "expected_ids": [],
+  "note": "ROI в длинах стороны метки: x вправо, y вниз в системе метки. Обязательно откалибровать на площадке."
+}
