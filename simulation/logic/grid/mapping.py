@@ -1,6 +1,5 @@
-"""Поиск начала сетки и картографирование одним дроном."""
-from highteck.grid.storage import save_grid
-from highteck.vision.markers import WIDTH, HEIGHT, get_markers, nearest_marker
+from simulation.logic.grid.storage import save_grid
+from simulation.logic.vision.markers import WIDTH, HEIGHT, get_markers, nearest_marker
 
 
 GRID_STEP = 0.85

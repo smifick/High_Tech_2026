@@ -1,10 +1,9 @@
 import argparse
 import os
 
-from highteck.paths import SCENE_PATH
-
-from highteck.simulation.drone_control import DroneFleet
-from highteck.grid.mapping import get_base_xy
+from simulation.logic.paths import SCENE_PATH
+from simulation.logic.simulation.drone_control import DroneFleet
+from simulation.logic.grid.mapping import get_base_xy
 
 os.environ['SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR'] = '0'
 os.environ['SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR'] = '0'

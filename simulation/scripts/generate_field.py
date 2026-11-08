@@ -8,8 +8,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import cv2
-
-from highteck.paths import SCENE_PATH
+from simulation.logic.paths import SCENE_PATH
 
 N = 10
 STEP = 0.85  # The specification permits 0.70–1.00 m.

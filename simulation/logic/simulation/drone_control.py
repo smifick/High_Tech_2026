@@ -5,7 +5,7 @@ import time
 import mujoco
 import numpy as np
 
-from highteck.paths import SCENE_PATH
+from simulation.logic.paths import SCENE_PATH
 
 import os
 os.environ["XDG_SESSION_TYPE"] = "x11"
