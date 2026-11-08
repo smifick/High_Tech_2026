@@ -12,3 +12,6 @@ dataset/
 *.engine
 .pytest_cache/
 .DS_Store
+**/MUJOCO_LOG.TXT
+**/__pycache__
+.idea

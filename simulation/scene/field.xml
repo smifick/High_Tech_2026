@@ -1,0 +1,598 @@
+<mujoco model="hitech_aruco_inventory">
+  <compiler angle="radian" />
+  <option timestep="0.01" gravity="0 0 -9.81" />
+  <visual />
+  <asset>
+    <material name="floor_mat" rgba="0.64 0.67 0.69 1" />
+    <material name="cargo_mat" rgba="0.70 0.52 0.32 1" />
+    <material name="damage_mat" rgba="0.35 0.14 0.12 1" />
+    <texture name="aruco_tex_00" type="2d" file="textures/aruco_00.png" />
+    <material name="aruco_mat_00" texture="aruco_tex_00" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_01" type="2d" file="textures/aruco_01.png" />
+    <material name="aruco_mat_01" texture="aruco_tex_01" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_02" type="2d" file="textures/aruco_02.png" />
+    <material name="aruco_mat_02" texture="aruco_tex_02" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_03" type="2d" file="textures/aruco_03.png" />
+    <material name="aruco_mat_03" texture="aruco_tex_03" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_04" type="2d" file="textures/aruco_04.png" />
+    <material name="aruco_mat_04" texture="aruco_tex_04" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_05" type="2d" file="textures/aruco_05.png" />
+    <material name="aruco_mat_05" texture="aruco_tex_05" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_06" type="2d" file="textures/aruco_06.png" />
+    <material name="aruco_mat_06" texture="aruco_tex_06" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_07" type="2d" file="textures/aruco_07.png" />
+    <material name="aruco_mat_07" texture="aruco_tex_07" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_08" type="2d" file="textures/aruco_08.png" />
+    <material name="aruco_mat_08" texture="aruco_tex_08" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_09" type="2d" file="textures/aruco_09.png" />
+    <material name="aruco_mat_09" texture="aruco_tex_09" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_10" type="2d" file="textures/aruco_10.png" />
+    <material name="aruco_mat_10" texture="aruco_tex_10" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_11" type="2d" file="textures/aruco_11.png" />
+    <material name="aruco_mat_11" texture="aruco_tex_11" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_12" type="2d" file="textures/aruco_12.png" />
+    <material name="aruco_mat_12" texture="aruco_tex_12" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_13" type="2d" file="textures/aruco_13.png" />
+    <material name="aruco_mat_13" texture="aruco_tex_13" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_14" type="2d" file="textures/aruco_14.png" />
+    <material name="aruco_mat_14" texture="aruco_tex_14" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_15" type="2d" file="textures/aruco_15.png" />
+    <material name="aruco_mat_15" texture="aruco_tex_15" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_16" type="2d" file="textures/aruco_16.png" />
+    <material name="aruco_mat_16" texture="aruco_tex_16" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_17" type="2d" file="textures/aruco_17.png" />
+    <material name="aruco_mat_17" texture="aruco_tex_17" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_18" type="2d" file="textures/aruco_18.png" />
+    <material name="aruco_mat_18" texture="aruco_tex_18" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_19" type="2d" file="textures/aruco_19.png" />
+    <material name="aruco_mat_19" texture="aruco_tex_19" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_20" type="2d" file="textures/aruco_20.png" />
+    <material name="aruco_mat_20" texture="aruco_tex_20" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_21" type="2d" file="textures/aruco_21.png" />
+    <material name="aruco_mat_21" texture="aruco_tex_21" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_22" type="2d" file="textures/aruco_22.png" />
+    <material name="aruco_mat_22" texture="aruco_tex_22" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_23" type="2d" file="textures/aruco_23.png" />
+    <material name="aruco_mat_23" texture="aruco_tex_23" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_24" type="2d" file="textures/aruco_24.png" />
+    <material name="aruco_mat_24" texture="aruco_tex_24" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_25" type="2d" file="textures/aruco_25.png" />
+    <material name="aruco_mat_25" texture="aruco_tex_25" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_26" type="2d" file="textures/aruco_26.png" />
+    <material name="aruco_mat_26" texture="aruco_tex_26" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_27" type="2d" file="textures/aruco_27.png" />
+    <material name="aruco_mat_27" texture="aruco_tex_27" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_28" type="2d" file="textures/aruco_28.png" />
+    <material name="aruco_mat_28" texture="aruco_tex_28" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_29" type="2d" file="textures/aruco_29.png" />
+    <material name="aruco_mat_29" texture="aruco_tex_29" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_30" type="2d" file="textures/aruco_30.png" />
+    <material name="aruco_mat_30" texture="aruco_tex_30" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_31" type="2d" file="textures/aruco_31.png" />
+    <material name="aruco_mat_31" texture="aruco_tex_31" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_32" type="2d" file="textures/aruco_32.png" />
+    <material name="aruco_mat_32" texture="aruco_tex_32" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_33" type="2d" file="textures/aruco_33.png" />
+    <material name="aruco_mat_33" texture="aruco_tex_33" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_34" type="2d" file="textures/aruco_34.png" />
+    <material name="aruco_mat_34" texture="aruco_tex_34" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_35" type="2d" file="textures/aruco_35.png" />
+    <material name="aruco_mat_35" texture="aruco_tex_35" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_36" type="2d" file="textures/aruco_36.png" />
+    <material name="aruco_mat_36" texture="aruco_tex_36" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_37" type="2d" file="textures/aruco_37.png" />
+    <material name="aruco_mat_37" texture="aruco_tex_37" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_38" type="2d" file="textures/aruco_38.png" />
+    <material name="aruco_mat_38" texture="aruco_tex_38" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_39" type="2d" file="textures/aruco_39.png" />
+    <material name="aruco_mat_39" texture="aruco_tex_39" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_40" type="2d" file="textures/aruco_40.png" />
+    <material name="aruco_mat_40" texture="aruco_tex_40" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_41" type="2d" file="textures/aruco_41.png" />
+    <material name="aruco_mat_41" texture="aruco_tex_41" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_42" type="2d" file="textures/aruco_42.png" />
+    <material name="aruco_mat_42" texture="aruco_tex_42" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_43" type="2d" file="textures/aruco_43.png" />
+    <material name="aruco_mat_43" texture="aruco_tex_43" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_44" type="2d" file="textures/aruco_44.png" />
+    <material name="aruco_mat_44" texture="aruco_tex_44" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_45" type="2d" file="textures/aruco_45.png" />
+    <material name="aruco_mat_45" texture="aruco_tex_45" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_46" type="2d" file="textures/aruco_46.png" />
+    <material name="aruco_mat_46" texture="aruco_tex_46" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_47" type="2d" file="textures/aruco_47.png" />
+    <material name="aruco_mat_47" texture="aruco_tex_47" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_48" type="2d" file="textures/aruco_48.png" />
+    <material name="aruco_mat_48" texture="aruco_tex_48" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_49" type="2d" file="textures/aruco_49.png" />
+    <material name="aruco_mat_49" texture="aruco_tex_49" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_50" type="2d" file="textures/aruco_50.png" />
+    <material name="aruco_mat_50" texture="aruco_tex_50" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_51" type="2d" file="textures/aruco_51.png" />
+    <material name="aruco_mat_51" texture="aruco_tex_51" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_52" type="2d" file="textures/aruco_52.png" />
+    <material name="aruco_mat_52" texture="aruco_tex_52" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_53" type="2d" file="textures/aruco_53.png" />
+    <material name="aruco_mat_53" texture="aruco_tex_53" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_54" type="2d" file="textures/aruco_54.png" />
+    <material name="aruco_mat_54" texture="aruco_tex_54" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_55" type="2d" file="textures/aruco_55.png" />
+    <material name="aruco_mat_55" texture="aruco_tex_55" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_56" type="2d" file="textures/aruco_56.png" />
+    <material name="aruco_mat_56" texture="aruco_tex_56" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_57" type="2d" file="textures/aruco_57.png" />
+    <material name="aruco_mat_57" texture="aruco_tex_57" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_58" type="2d" file="textures/aruco_58.png" />
+    <material name="aruco_mat_58" texture="aruco_tex_58" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_59" type="2d" file="textures/aruco_59.png" />
+    <material name="aruco_mat_59" texture="aruco_tex_59" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_60" type="2d" file="textures/aruco_60.png" />
+    <material name="aruco_mat_60" texture="aruco_tex_60" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_61" type="2d" file="textures/aruco_61.png" />
+    <material name="aruco_mat_61" texture="aruco_tex_61" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_62" type="2d" file="textures/aruco_62.png" />
+    <material name="aruco_mat_62" texture="aruco_tex_62" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_63" type="2d" file="textures/aruco_63.png" />
+    <material name="aruco_mat_63" texture="aruco_tex_63" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_64" type="2d" file="textures/aruco_64.png" />
+    <material name="aruco_mat_64" texture="aruco_tex_64" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_65" type="2d" file="textures/aruco_65.png" />
+    <material name="aruco_mat_65" texture="aruco_tex_65" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_66" type="2d" file="textures/aruco_66.png" />
+    <material name="aruco_mat_66" texture="aruco_tex_66" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_67" type="2d" file="textures/aruco_67.png" />
+    <material name="aruco_mat_67" texture="aruco_tex_67" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_68" type="2d" file="textures/aruco_68.png" />
+    <material name="aruco_mat_68" texture="aruco_tex_68" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_69" type="2d" file="textures/aruco_69.png" />
+    <material name="aruco_mat_69" texture="aruco_tex_69" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_70" type="2d" file="textures/aruco_70.png" />
+    <material name="aruco_mat_70" texture="aruco_tex_70" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_71" type="2d" file="textures/aruco_71.png" />
+    <material name="aruco_mat_71" texture="aruco_tex_71" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_72" type="2d" file="textures/aruco_72.png" />
+    <material name="aruco_mat_72" texture="aruco_tex_72" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_73" type="2d" file="textures/aruco_73.png" />
+    <material name="aruco_mat_73" texture="aruco_tex_73" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_74" type="2d" file="textures/aruco_74.png" />
+    <material name="aruco_mat_74" texture="aruco_tex_74" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_75" type="2d" file="textures/aruco_75.png" />
+    <material name="aruco_mat_75" texture="aruco_tex_75" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_76" type="2d" file="textures/aruco_76.png" />
+    <material name="aruco_mat_76" texture="aruco_tex_76" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_77" type="2d" file="textures/aruco_77.png" />
+    <material name="aruco_mat_77" texture="aruco_tex_77" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_78" type="2d" file="textures/aruco_78.png" />
+    <material name="aruco_mat_78" texture="aruco_tex_78" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_79" type="2d" file="textures/aruco_79.png" />
+    <material name="aruco_mat_79" texture="aruco_tex_79" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_80" type="2d" file="textures/aruco_80.png" />
+    <material name="aruco_mat_80" texture="aruco_tex_80" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_81" type="2d" file="textures/aruco_81.png" />
+    <material name="aruco_mat_81" texture="aruco_tex_81" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_82" type="2d" file="textures/aruco_82.png" />
+    <material name="aruco_mat_82" texture="aruco_tex_82" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_83" type="2d" file="textures/aruco_83.png" />
+    <material name="aruco_mat_83" texture="aruco_tex_83" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_84" type="2d" file="textures/aruco_84.png" />
+    <material name="aruco_mat_84" texture="aruco_tex_84" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_85" type="2d" file="textures/aruco_85.png" />
+    <material name="aruco_mat_85" texture="aruco_tex_85" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_86" type="2d" file="textures/aruco_86.png" />
+    <material name="aruco_mat_86" texture="aruco_tex_86" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_87" type="2d" file="textures/aruco_87.png" />
+    <material name="aruco_mat_87" texture="aruco_tex_87" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_88" type="2d" file="textures/aruco_88.png" />
+    <material name="aruco_mat_88" texture="aruco_tex_88" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_89" type="2d" file="textures/aruco_89.png" />
+    <material name="aruco_mat_89" texture="aruco_tex_89" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_90" type="2d" file="textures/aruco_90.png" />
+    <material name="aruco_mat_90" texture="aruco_tex_90" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_91" type="2d" file="textures/aruco_91.png" />
+    <material name="aruco_mat_91" texture="aruco_tex_91" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_92" type="2d" file="textures/aruco_92.png" />
+    <material name="aruco_mat_92" texture="aruco_tex_92" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_93" type="2d" file="textures/aruco_93.png" />
+    <material name="aruco_mat_93" texture="aruco_tex_93" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_94" type="2d" file="textures/aruco_94.png" />
+    <material name="aruco_mat_94" texture="aruco_tex_94" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_95" type="2d" file="textures/aruco_95.png" />
+    <material name="aruco_mat_95" texture="aruco_tex_95" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_96" type="2d" file="textures/aruco_96.png" />
+    <material name="aruco_mat_96" texture="aruco_tex_96" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_97" type="2d" file="textures/aruco_97.png" />
+    <material name="aruco_mat_97" texture="aruco_tex_97" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_98" type="2d" file="textures/aruco_98.png" />
+    <material name="aruco_mat_98" texture="aruco_tex_98" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+    <texture name="aruco_tex_99" type="2d" file="textures/aruco_99.png" />
+    <material name="aruco_mat_99" texture="aruco_tex_99" texuniform="false" rgba="1 1 1 1" specular="0" shininess="0" />
+  </asset>
+  <worldbody>
+    <light name="sun" pos="0 0 12" dir="0 0 -1" directional="true" diffuse="0.9 0.9 0.9" />
+    <geom name="ground" type="plane" size="6 6 0.1" material="floor_mat" />
+    <camera name="top_down" pos="0 0 13" xyaxes="1 0 0 0 1 0" fovy="43" />
+    <camera name="rover_view" pos="0 -5 0.7" xyaxes="1 0 0 0 0.14 0.99" fovy="75" />
+    <body name="drone_0" mocap="true" pos="-1.350 -4.5 0.25">
+      <geom name="drone_0_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
+      <geom name="drone_0_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_0_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_0_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_0_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <camera name="drone_0_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
+    </body>
+    <body name="drone_1" mocap="true" pos="-0.450 -4.5 0.25">
+      <geom name="drone_1_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
+      <geom name="drone_1_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_1_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_1_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_1_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <camera name="drone_1_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
+    </body>
+    <body name="drone_2" mocap="true" pos="0.450 -4.5 0.25">
+      <geom name="drone_2_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
+      <geom name="drone_2_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_2_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_2_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_2_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <camera name="drone_2_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
+    </body>
+    <body name="drone_3" mocap="true" pos="1.350 -4.5 0.25">
+      <geom name="drone_3_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
+      <geom name="drone_3_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_3_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_3_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <geom name="drone_3_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
+      <camera name="drone_3_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
+    </body>
+    <body name="slot_00" pos="-3.8250 3.8250 0">
+      <geom name="marker_00" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_00" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_01" pos="-2.9750 3.8250 0">
+      <geom name="marker_01" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_01" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_02" pos="-2.1250 3.8250 0">
+      <geom name="marker_02" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_02" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_03" pos="-1.2750 3.8250 0">
+      <geom name="marker_03" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_03" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_03" pos="-0.9650 3.8250 0.1750">
+      <geom name="box_03" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+      <geom name="damage_03" type="box" pos="0 -0.2030 0" size="0.105 0.004 0.075" material="damage_mat" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_04" pos="-0.4250 3.8250 0">
+      <geom name="marker_04" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_04" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_04" pos="-0.1150 3.8250 0.1750">
+      <geom name="box_04" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+      <geom name="damage_04" type="box" pos="0 -0.2030 0" size="0.105 0.004 0.075" material="damage_mat" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_05" pos="0.4250 3.8250 0">
+      <geom name="marker_05" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_05" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_06" pos="1.2750 3.8250 0">
+      <geom name="marker_06" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_06" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_07" pos="2.1250 3.8250 0">
+      <geom name="marker_07" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_07" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_08" pos="2.9750 3.8250 0">
+      <geom name="marker_08" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_08" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_09" pos="3.8250 3.8250 0">
+      <geom name="marker_09" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_09" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_10" pos="-3.8250 2.9750 0">
+      <geom name="marker_10" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_10" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_11" pos="-2.9750 2.9750 0">
+      <geom name="marker_11" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_11" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_11" pos="-2.6650 2.9750 0.1750">
+      <geom name="box_11" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_12" pos="-2.1250 2.9750 0">
+      <geom name="marker_12" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_12" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_13" pos="-1.2750 2.9750 0">
+      <geom name="marker_13" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_13" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_13" pos="-0.9650 2.9750 0.1750">
+      <geom name="box_13" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+      <geom name="damage_13" type="box" pos="0 -0.2030 0" size="0.105 0.004 0.075" material="damage_mat" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_14" pos="-0.4250 2.9750 0">
+      <geom name="marker_14" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_14" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_14" pos="-0.1150 2.9750 0.1750">
+      <geom name="box_14" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_15" pos="0.4250 2.9750 0">
+      <geom name="marker_15" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_15" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_16" pos="1.2750 2.9750 0">
+      <geom name="marker_16" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_16" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_17" pos="2.1250 2.9750 0">
+      <geom name="marker_17" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_17" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_17" pos="2.4350 2.9750 0.1750">
+      <geom name="box_17" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_18" pos="2.9750 2.9750 0">
+      <geom name="marker_18" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_18" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_19" pos="3.8250 2.9750 0">
+      <geom name="marker_19" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_19" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_20" pos="-3.8250 2.1250 0">
+      <geom name="marker_20" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_20" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_21" pos="-2.9750 2.1250 0">
+      <geom name="marker_21" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_21" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_22" pos="-2.1250 2.1250 0">
+      <geom name="marker_22" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_22" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_23" pos="-1.2750 2.1250 0">
+      <geom name="marker_23" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_23" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_24" pos="-0.4250 2.1250 0">
+      <geom name="marker_24" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_24" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_25" pos="0.4250 2.1250 0">
+      <geom name="marker_25" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_25" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_26" pos="1.2750 2.1250 0">
+      <geom name="marker_26" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_26" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_27" pos="2.1250 2.1250 0">
+      <geom name="marker_27" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_27" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_28" pos="2.9750 2.1250 0">
+      <geom name="marker_28" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_28" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_28" pos="3.2850 2.1250 0.1750">
+      <geom name="box_28" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_29" pos="3.8250 2.1250 0">
+      <geom name="marker_29" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_29" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_30" pos="-3.8250 1.2750 0">
+      <geom name="marker_30" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_30" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_31" pos="-2.9750 1.2750 0">
+      <geom name="marker_31" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_31" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_31" pos="-2.6650 1.2750 0.1750">
+      <geom name="box_31" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_32" pos="-2.1250 1.2750 0">
+      <geom name="marker_32" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_32" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_33" pos="-1.2750 1.2750 0">
+      <geom name="marker_33" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_33" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_34" pos="-0.4250 1.2750 0">
+      <geom name="marker_34" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_34" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_35" pos="0.4250 1.2750 0">
+      <geom name="marker_35" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_35" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_35" pos="0.7350 1.2750 0.1750">
+      <geom name="box_35" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+      <geom name="damage_35" type="box" pos="0 -0.2030 0" size="0.105 0.004 0.075" material="damage_mat" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_36" pos="1.2750 1.2750 0">
+      <geom name="marker_36" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_36" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_37" pos="2.1250 1.2750 0">
+      <geom name="marker_37" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_37" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_38" pos="2.9750 1.2750 0">
+      <geom name="marker_38" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_38" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_39" pos="3.8250 1.2750 0">
+      <geom name="marker_39" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_39" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_40" pos="-3.8250 0.4250 0">
+      <geom name="marker_40" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_40" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_41" pos="-2.9750 0.4250 0">
+      <geom name="marker_41" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_41" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_42" pos="-2.1250 0.4250 0">
+      <geom name="marker_42" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_42" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_43" pos="-1.2750 0.4250 0">
+      <geom name="marker_43" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_43" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_44" pos="-0.4250 0.4250 0">
+      <geom name="marker_44" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_44" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_45" pos="0.4250 0.4250 0">
+      <geom name="marker_45" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_45" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_46" pos="1.2750 0.4250 0">
+      <geom name="marker_46" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_46" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_47" pos="2.1250 0.4250 0">
+      <geom name="marker_47" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_47" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_48" pos="2.9750 0.4250 0">
+      <geom name="marker_48" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_48" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_49" pos="3.8250 0.4250 0">
+      <geom name="marker_49" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_49" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_50" pos="-3.8250 -0.4250 0">
+      <geom name="marker_50" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_50" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_51" pos="-2.9750 -0.4250 0">
+      <geom name="marker_51" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_51" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_52" pos="-2.1250 -0.4250 0">
+      <geom name="marker_52" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_52" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_53" pos="-1.2750 -0.4250 0">
+      <geom name="marker_53" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_53" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_54" pos="-0.4250 -0.4250 0">
+      <geom name="marker_54" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_54" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_54" pos="-0.1150 -0.4250 0.1750">
+      <geom name="box_54" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_55" pos="0.4250 -0.4250 0">
+      <geom name="marker_55" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_55" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_56" pos="1.2750 -0.4250 0">
+      <geom name="marker_56" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_56" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_57" pos="2.1250 -0.4250 0">
+      <geom name="marker_57" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_57" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_58" pos="2.9750 -0.4250 0">
+      <geom name="marker_58" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_58" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_59" pos="3.8250 -0.4250 0">
+      <geom name="marker_59" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_59" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_60" pos="-3.8250 -1.2750 0">
+      <geom name="marker_60" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_60" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_61" pos="-2.9750 -1.2750 0">
+      <geom name="marker_61" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_61" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_62" pos="-2.1250 -1.2750 0">
+      <geom name="marker_62" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_62" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_63" pos="-1.2750 -1.2750 0">
+      <geom name="marker_63" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_63" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_64" pos="-0.4250 -1.2750 0">
+      <geom name="marker_64" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_64" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_65" pos="0.4250 -1.2750 0">
+      <geom name="marker_65" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_65" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_66" pos="1.2750 -1.2750 0">
+      <geom name="marker_66" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_66" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_67" pos="2.1250 -1.2750 0">
+      <geom name="marker_67" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_67" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_68" pos="2.9750 -1.2750 0">
+      <geom name="marker_68" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_68" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_69" pos="3.8250 -1.2750 0">
+      <geom name="marker_69" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_69" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_69" pos="4.1350 -1.2750 0.1750">
+      <geom name="box_69" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_70" pos="-3.8250 -2.1250 0">
+      <geom name="marker_70" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_70" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_71" pos="-2.9750 -2.1250 0">
+      <geom name="marker_71" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_71" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_72" pos="-2.1250 -2.1250 0">
+      <geom name="marker_72" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_72" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_73" pos="-1.2750 -2.1250 0">
+      <geom name="marker_73" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_73" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_74" pos="-0.4250 -2.1250 0">
+      <geom name="marker_74" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_74" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_75" pos="0.4250 -2.1250 0">
+      <geom name="marker_75" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_75" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_75" pos="0.7350 -2.1250 0.1750">
+      <geom name="box_75" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_76" pos="1.2750 -2.1250 0">
+      <geom name="marker_76" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_76" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_77" pos="2.1250 -2.1250 0">
+      <geom name="marker_77" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_77" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_78" pos="2.9750 -2.1250 0">
+      <geom name="marker_78" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_78" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_79" pos="3.8250 -2.1250 0">
+      <geom name="marker_79" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_79" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_80" pos="-3.8250 -2.9750 0">
+      <geom name="marker_80" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_80" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_81" pos="-2.9750 -2.9750 0">
+      <geom name="marker_81" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_81" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_81" pos="-2.6650 -2.9750 0.1750">
+      <geom name="box_81" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+      <geom name="damage_81" type="box" pos="0 -0.2030 0" size="0.105 0.004 0.075" material="damage_mat" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_82" pos="-2.1250 -2.9750 0">
+      <geom name="marker_82" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_82" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_83" pos="-1.2750 -2.9750 0">
+      <geom name="marker_83" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_83" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_84" pos="-0.4250 -2.9750 0">
+      <geom name="marker_84" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_84" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_85" pos="0.4250 -2.9750 0">
+      <geom name="marker_85" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_85" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_86" pos="1.2750 -2.9750 0">
+      <geom name="marker_86" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_86" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_86" pos="1.5850 -2.9750 0.1750">
+      <geom name="box_86" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_87" pos="2.1250 -2.9750 0">
+      <geom name="marker_87" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_87" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_88" pos="2.9750 -2.9750 0">
+      <geom name="marker_88" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_88" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_89" pos="3.8250 -2.9750 0">
+      <geom name="marker_89" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_89" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_90" pos="-3.8250 -3.8250 0">
+      <geom name="marker_90" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_90" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_91" pos="-2.9750 -3.8250 0">
+      <geom name="marker_91" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_91" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_92" pos="-2.1250 -3.8250 0">
+      <geom name="marker_92" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_92" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_93" pos="-1.2750 -3.8250 0">
+      <geom name="marker_93" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_93" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_94" pos="-0.4250 -3.8250 0">
+      <geom name="marker_94" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_94" contype="0" conaffinity="0" />
+    </body>
+    <body name="cargo_94" pos="-0.1150 -3.8250 0.1750">
+      <geom name="box_94" type="box" size="0.2 0.2 0.175" material="cargo_mat" />
+    </body>
+    <body name="slot_95" pos="0.4250 -3.8250 0">
+      <geom name="marker_95" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_95" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_96" pos="1.2750 -3.8250 0">
+      <geom name="marker_96" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_96" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_97" pos="2.1250 -3.8250 0">
+      <geom name="marker_97" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_97" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_98" pos="2.9750 -3.8250 0">
+      <geom name="marker_98" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_98" contype="0" conaffinity="0" />
+    </body>
+    <body name="slot_99" pos="3.8250 -3.8250 0">
+      <geom name="marker_99" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_99" contype="0" conaffinity="0" />
+    </body>
+  </worldbody>
+</mujoco>
