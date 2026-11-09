@@ -212,7 +212,7 @@
     <geom name="ground" type="plane" size="6 6 0.1" material="floor_mat" />
     <camera name="top_down" pos="0 0 13" xyaxes="1 0 0 0 1 0" fovy="43" />
     <camera name="rover_view" pos="0 -5 0.7" xyaxes="1 0 0 0 0.14 0.99" fovy="75" />
-    <body name="drone_0" mocap="true" pos="-1.350 -4.5 0.25">
+    <body name="drone_0" mocap="true" pos="-0.450 -4.5 0.25">
       <geom name="drone_0_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
       <geom name="drone_0_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <geom name="drone_0_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
@@ -220,29 +220,13 @@
       <geom name="drone_0_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <camera name="drone_0_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
     </body>
-    <body name="drone_1" mocap="true" pos="-0.450 -4.5 0.25">
+    <body name="drone_1" mocap="true" pos="0.450 -4.5 0.25">
       <geom name="drone_1_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
       <geom name="drone_1_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <geom name="drone_1_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <geom name="drone_1_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <geom name="drone_1_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
       <camera name="drone_1_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
-    </body>
-    <body name="drone_2" mocap="true" pos="0.450 -4.5 0.25">
-      <geom name="drone_2_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
-      <geom name="drone_2_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_2_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_2_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_2_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <camera name="drone_2_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
-    </body>
-    <body name="drone_3" mocap="true" pos="1.350 -4.5 0.25">
-      <geom name="drone_3_body" type="box" size="0.12 0.12 0.045" rgba="0.15 0.30 0.77 1" contype="0" conaffinity="0" />
-      <geom name="drone_3_motor_pp" type="sphere" size="0.045" pos="0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_3_motor_pm" type="sphere" size="0.045" pos="0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_3_motor_mp" type="sphere" size="0.045" pos="-0.17 0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <geom name="drone_3_motor_mm" type="sphere" size="0.045" pos="-0.17 -0.17 0" rgba="0.1 0.1 0.14 1" contype="0" conaffinity="0" />
-      <camera name="drone_3_down" pos="0 0 -0.06" xyaxes="1 0 0 0 1 0" fovy="70" />
     </body>
     <body name="slot_00" pos="-3.8250 3.8250 0">
       <geom name="marker_00" type="box" size="0.09 0.09 0.001" pos="0 0 0.003" material="aruco_mat_00" contype="0" conaffinity="0" />
