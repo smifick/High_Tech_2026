@@ -1,5 +1,3 @@
-from time import sleep
-
 import sverk_interfaces
 
 drone = sverk_interfaces.init(Nodename="fly_scan")
@@ -8,8 +6,8 @@ try:
     drone.control.navigate_wait(
         x=0.0,
         y=0.0,
-        z=1.0,
-        frame_id="body",
+        z=2.0,
+        frame_id="map",
         auto_arm=True,
         speed=0.3,
         tolerance=0.15,
@@ -22,17 +20,15 @@ try:
         raise RuntimeError("Нет связи с контроллером или моторы не включены")
 
     drone.control.navigate_wait(
-        x=3.70,
-        y=0.0,
-        z=0.0,
+        x=2.0,
+        y=2.0,
+        z=2.0,
         yaw=0.0,
-        frame_id="body",
+        frame_id="aruco_map",
         speed=0.3,
         tolerance=0.15,
         timeout=60.0,
     )
-
-    sleep(2)
 
     drone.control.land()
 

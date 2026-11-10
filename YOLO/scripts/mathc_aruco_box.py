@@ -9,9 +9,7 @@ dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
 parameters = cv2.aruco.DetectorParameters()
 detector = cv2.aruco.ArucoDetector(dictionary, parameters)
 
-i = 1
-
-img = cv2.imread(f"/data/Projects/High_Tech_2026/YOLO/assets/test_mathc_{i}.png")
+img = cv2.imread(f"/data/Projects/High_Tech_2026/YOLO/assets/test_match_1.png")
 
 if img is None:
     raise FileNotFoundError("Не удалось прочитать изображение")
@@ -29,7 +27,7 @@ if ids is not None:
     markers = dict(zip(ids.flatten().tolist(), centers))
 
 folder = Path(__file__).resolve().parent
-model = YOLO('/weights/best_drone_photos_yolo.pt')
+model = YOLO('/data/Projects/High_Tech_2026/YOLO/YOLO11n_models/YOLO11n_finetune/best_for_finetune.pt')
 result = model.predict(
     source=img,
     device="cpu",
