@@ -1,6 +1,6 @@
 import cv2
 from ultralytics import YOLO
-from packages.match_box import match_box_to_marker
+from shared.match_box import match_box_to_marker
 import sverk_interfaces
 from time import sleep
 

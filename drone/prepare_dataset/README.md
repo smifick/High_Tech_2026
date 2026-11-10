@@ -23,4 +23,4 @@ scp -r sverk@<ip>:~/phtos ./path_on_your_pc
 ```
 
 ## Пример фото:
-![example.jpg](example.jpg)
+![example.jpg](assets/example.jpg)

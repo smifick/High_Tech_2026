@@ -2,7 +2,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from packages.match_box import match_box_to_marker
+from shared.match_box import match_box_to_marker
 
 
 dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
