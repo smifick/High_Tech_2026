@@ -18,12 +18,3 @@ def get_markers(drone):
     centers = [corner.reshape(4, 2).mean(axis=0).tolist() for corner in corners]
 
     return centers, ids.flatten().tolist(), rejected
-
-
-def nearest_marker(drone):
-    centers, ids, _ = get_markers(drone)
-    if not centers:
-        return None
-    index = min(range(len(centers)), key=lambda i:
-                (centers[i][0] - WIDTH / 2) ** 2 + (centers[i][1] - HEIGHT / 2) ** 2)
-    return ids[index]

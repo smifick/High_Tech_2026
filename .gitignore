@@ -7,7 +7,6 @@ runs/
 attempts/
 frames/
 dataset/
-*.pt
 *.onnx
 *.engine
 .pytest_cache/

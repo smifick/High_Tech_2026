@@ -1,13 +1,13 @@
 import sverk_interfaces
 
-drone = sverk_interfaces.init(Nodename="fly_to_aruco_100")
+drone = sverk_interfaces.init(Nodename="fly_scan")
 
 try:
     drone.control.navigate_wait(
         x=0.0,
         y=0.0,
-        z=1.0,
-        frame_id="body",
+        z=2.0,
+        frame_id="map",
         auto_arm=True,
         speed=0.3,
         tolerance=0.15,
@@ -20,17 +20,18 @@ try:
         raise RuntimeError("Нет связи с контроллером или моторы не включены")
 
     drone.control.navigate_wait(
-        x=0.0,
-        y=0.0,
-        z=1.0,
+        x=2.0,
+        y=2.0,
+        z=2.0,
         yaw=0.0,
-        frame_id="aruco_100",
+        frame_id="aruco_map",
         speed=0.3,
         tolerance=0.15,
         timeout=60.0,
     )
 
-    print("Ожидание перелёта завершено. Проверь положение дрона.")
+    drone.control.land()
 
 finally:
+    drone.control.land()
     drone.close()

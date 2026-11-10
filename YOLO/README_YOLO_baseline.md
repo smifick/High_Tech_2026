@@ -23,11 +23,11 @@ pip install -r requirements.txt
 # Укажите путь к данным в data.yaml
 python train.py --device 0 --epochs 100
 # Без CUDA: --device cpu (существенно медленнее)
-python infer.py --weights runs/boxes/weights/best.pt \
+python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
   --source frames/drone1 --attempt attempts/001 --agent drone-1
-python infer.py --weights runs/boxes/weights/best.pt \
+python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
   --source frames/drone2 --attempt attempts/001 --agent drone-2
-python infer.py --weights runs/boxes/weights/best.pt \
+python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
   --source frames/rover/place24 --attempt attempts/001 \
   --view side --place-id 24 --agent rover
 python -m unittest discover -s tests -v
@@ -52,7 +52,7 @@ dataset/
 Проверка детектора после обучения:
 
 ```bash
-yolo detect val model=runs/boxes/weights/best.pt data=data.yaml split=test imgsz=960
+yolo detect val model=runs/boxes/weights/best_drone_photos_yolo.pt data=data.yaml split=test imgsz=960
 ```
 
 Отдельно измеряйте пропуски аномалий, ложные отметки пустоты и точность
