@@ -1,5 +1,5 @@
 from simulation.logic.grid.storage import save_grid
-from simulation.logic.vision.markers import WIDTH, HEIGHT, get_markers, nearest_marker
+from simulation.logic.vision.markers import WIDTH, HEIGHT, get_markers
 
 
 GRID_STEP = 0.85
