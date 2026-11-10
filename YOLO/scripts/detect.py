@@ -14,9 +14,8 @@ def main():
     if not image.is_file():
         parser.error(f"Не найдена картинка: {image}")
 
-    # Загружаем именно ваши обученные веса
     folder = Path(__file__).resolve().parent
-    model = YOLO(str(folder / "best.pt"))
+    model = YOLO(str(folder / "best_drone_photos_yolo.pt"))
 
     result = model.predict(
         source=str(image),

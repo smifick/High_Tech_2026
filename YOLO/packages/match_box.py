@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def match_box_to_marker(box_points, markers, angle_deg=0):
+def match_box_to_marker(box_points, markers, angle_deg=0, alpha=0.9):
     box = np.asarray(box_points, dtype=float)
 
     if box.shape != (4, 2):
@@ -40,7 +40,7 @@ def match_box_to_marker(box_points, markers, angle_deg=0):
         x, y = (point - center) @ rotation
         gap = x_left - x
 
-        if not (0 <= gap <= 0.6 * width):
+        if not (0 <= gap <= alpha * width):
             continue
 
         if not (y_top <= y <= y_bottom):

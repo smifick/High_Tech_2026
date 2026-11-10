@@ -65,33 +65,3 @@ def get_angel_n(centers, n=1) -> tuple:
 
     except RuntimeError:
         return True, True, direction
-
-def get_grid(drone, rows, cols, output_file="grid.json", n=1):
-    """n = {1 RL, 2 RR, 3 FL, 4 FR}"""
-    base_x, base_y = get_base_xy(drone, n)
-    result = []
-
-    for row in range(rows):
-        for col in range(cols):
-            grid_col = col if row % 2 == 0 else cols - col - 1
-
-            x = grid_col * GRID_STEP
-            y = row * GRID_STEP
-
-            drone.control.navigate_wait(x=x + base_x, y=y + base_y, z=2.0, speed=1.5, frame_id="map", auto_arm=True)
-
-            marker_id = nearest_marker(drone)
-
-            result.append({
-                "row": row,
-                "col": grid_col,
-                "x": x,
-                "y": y,
-                "marker_id": marker_id
-            })
-
-            print(f"Cell [{row}, {grid_col}]: marker={marker_id}")
-
-            save_grid(result, output_file)
-
-    return result
