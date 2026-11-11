@@ -621,4 +621,4 @@ PYTHONPATH=.:simulation/logic python simulation/scripts/scan_field.py
 - [Открытый репозиторий для Обрика с исходным кодом](https://github.com/sverk-tech/sverk-ros2).
 - [Открытый репозиторий для Ровера с исходным кодом](https://github.com/wodocanal/sverk_rover).
 - [Инструкция по работе с YOLO, предоставленная экспертами](https://docs.radxa.com/en/cubie/a7z/app-dev/npu-dev/model-zoo/model-zoo-download).
-- [Документация по развертыванию docker]
+- Документация по развертыванию docker контейнеров
