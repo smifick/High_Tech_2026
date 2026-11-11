@@ -618,3 +618,7 @@ PYTHONPATH=.:simulation/logic python simulation/scripts/scan_field.py
 - [Карта ArUco 7,5 × 4,5 м](drone/aruco_nav/aruco_map_750x450_id100.txt) и [полётный пример](drone/aruco_nav/flight_aruco.py).
 - [Сервер команд](shared/ws_server.py), [клиент команд](shared/ws_client.py) и [привязка коробки к маркеру](shared/match_box.py).
 - [Зависимости проекта](requirements.txt).
+- [Открытый репозиторий для Обрика с исходным кодом](https://github.com/sverk-tech/sverk-ros2).
+- [Открытый репозиторий для Ровера с исходным кодом](https://github.com/wodocanal/sverk_rover).
+- [Инструкция по работе с YOLO, предоставленная экспертами](https://docs.radxa.com/en/cubie/a7z/app-dev/npu-dev/model-zoo/model-zoo-download).
+- [Документация по развертыванию docker]
