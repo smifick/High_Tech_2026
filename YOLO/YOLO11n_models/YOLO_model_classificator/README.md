@@ -267,3 +267,6 @@ print("Результаты:", results[0].save_dir)
 
 **Основной артефакт завершённого обучения:** `weights/best.pt`. Перед практическим использованием проверьте его на независимых данных и примерах обоих классов.
 
+## Приложения
+![Результаты обучения](YOLO/YOLO11n_models/YOLO_model_classificator/results_of_training/BoxF1_curve.png)
+
