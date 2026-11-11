@@ -55,7 +55,7 @@
 - [rover](rover/README.md) — клиент команд наземного робота.
 - [shared](shared/README.md) — WebSocket-связь и привязка коробок к маркерам.
 - [simulation](simulation/README.md) — ранний прототип полёта четырёх дронов в MuJoCo.
-- [YOLO_baseline](YOLO/README_YOLO_baseline.md) — обучение, веса и скрипты компьютерного зрения.
+- [YOLO_baseline](YOLO/YOLO11n_models/YOLO11n_baseline/README_YOLO_baseline.md) — обучение, веса и скрипты компьютерного зрения.
 - [YOLO_finetume](YOLO/YOLO11n_models/YOLO11n_finetune/README.md) - дообученная YOLO
 - [YOLO_model_classificator](YOLO/YOLO11n_models/YOLO_model_classificator/README.md) - YOLO с распознаванием разных классов изображений
 
