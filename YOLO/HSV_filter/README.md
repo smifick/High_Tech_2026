@@ -96,3 +96,4 @@ UPPER = np.array([110, 255, 255], dtype=np.uint8)
 Пример обработки изображения после HSV фильтра
 Маска HSV
 ![Маска HSV](assets/5_hsv.jpg__mask.png)
+![Второй пример](assets/fisheye_07.png__hsv.png)
