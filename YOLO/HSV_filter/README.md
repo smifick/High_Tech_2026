@@ -95,6 +95,6 @@ UPPER = np.array([110, 255, 255], dtype=np.uint8)
 ## Приложения
 Пример обработки изображения после HSV фильтра
 Первый пример
-![Пример фотографии](YOLO/HSV_filter/assets/5_hsv.jpg__mask.png)
-Второй пример
 ![Пример фотографии](YOLO/HSV_filter/assets/fisheye_07.png__hsv.png)
+Второй пример
+![Пример фотографии](YOLO/HSV_filter/assets/5_hsv.jpg__mask.png)
