@@ -96,3 +96,10 @@ Ultralytics распространяется на условиях AGPL-3.0/ко
 | `data.yaml` | Пути датасета и классы |
 | `tests` | Тесты логики решений |
 
+## Приложения
+Результаты обучения
+F1-Confidence Curve
+![Результаты обучения](YOLO/YOLO11n_models/YOLO11n_baseline/train/training_info/BoxF1_curve.png)
+Распознавание объектов
+![Результаты обучения](YOLO/YOLO11n_models/YOLO11n_baseline/train/training_info/val_batch0_labels.jpg)
+

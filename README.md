@@ -55,7 +55,10 @@
 - [rover](rover/README.md) — клиент команд наземного робота.
 - [shared](shared/README.md) — WebSocket-связь и привязка коробок к маркерам.
 - [simulation](simulation/README.md) — ранний прототип полёта четырёх дронов в MuJoCo.
-- [YOLO](YOLO/README_YOLO_baseline.md) — обучение, веса и скрипты компьютерного зрения.
+- [YOLO_baseline](YOLO/YOLO11n_models/YOLO11n_baseline/README_YOLO_baseline.md) — обучение, веса и скрипты компьютерного зрения.
+- [YOLO_finetume](YOLO/YOLO11n_models/YOLO11n_finetune/README.md) - дообученная YOLO
+- [YOLO_model_classificator](YOLO/YOLO11n_models/YOLO_model_classificator/README.md) - YOLO с распознаванием разных классов изображений
+- [HSV-filter](YOLO/HSV_filter/README.md) - HSV фильтр
 
 Состояние реализации описано по файлам репозитория на 10.11.2026. Реализованы отдельные модули; полный автономный цикл ещё требует интеграции.
 
@@ -258,6 +261,7 @@ y_rover = -sin(theta) * (x_map - tx) + cos(theta) * (y_map - ty)
 **Вывод:** формула соответствует сетке в файле. Точность локализации и подъезда ровера по этим данным оценить нельзя. При испытаниях следует измерить фактические координаты нескольких точек и вычислить ошибку `sqrt((x_calc - x_ref)^2 + (y_calc - y_ref)^2)` в метрах.
 
 ## 7. Компьютерное зрение
+Подробнее прочитать в README: [YOLO](YOLO/YOLO11n_models/YOLO11n_baseline/README_YOLO_baseline.md)
 
 ### 7.1. Метод распознавания
 
