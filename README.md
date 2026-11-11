@@ -58,6 +58,7 @@
 - [YOLO_baseline](YOLO/YOLO11n_models/YOLO11n_baseline/README_YOLO_baseline.md) — обучение, веса и скрипты компьютерного зрения.
 - [YOLO_finetume](YOLO/YOLO11n_models/YOLO11n_finetune/README.md) - дообученная YOLO
 - [YOLO_model_classificator](YOLO/YOLO11n_models/YOLO_model_classificator/README.md) - YOLO с распознаванием разных классов изображений
+- [HSV-filter](YOLO/HSV_filter/README.md) - HSV фильтр
 
 Состояние реализации описано по файлам репозитория на 10.11.2026. Реализованы отдельные модули; полный автономный цикл ещё требует интеграции.
 
