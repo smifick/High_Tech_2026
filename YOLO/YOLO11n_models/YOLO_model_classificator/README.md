@@ -269,4 +269,5 @@ print("Результаты:", results[0].save_dir)
 
 ## Приложения
 ![Результаты обучения](results_of_training/BoxF1_curve.png)
+![Результаты распознавания](results_of_training/train_batch1.jpg)
 
