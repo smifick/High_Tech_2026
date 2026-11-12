@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import signal
 import sys
 import time
 from urllib.parse import urlsplit
@@ -42,6 +43,9 @@ class Station:
         self.rover_camera_stop = asyncio.Event()
         self.rover_camera_mode = 'off'
         self.rover_camera_info = {'frame':0, 'received_at':None, 'error':None, 'detections':[]}
+        self.inspection_process = None
+        self.inspection_cancelled = False
+        self.inspection_status = "Ожидание завершения полёта"
         self.processor = None
         self.inventory = None
         self.camera_mode = 'off'
@@ -142,11 +146,64 @@ class Station:
         self.routes = checked
         self.progress.clear()
         self.robot.stop_requested.clear()
-        job, task = self.launch('Общий маршрут', self.robot.run_mission(checked))
+        self.inspection_cancelled = False
+        job, task = self.launch('Полёт и проверка коробок', self.flight_and_inspection(checked))
         self.robot.mission_task = task
         return {'job': job}
 
+    async def flight_and_inspection(self, routes):
+        if self.config.get('rover_inspection', {}).get('enabled'):
+            if self.rover is None or self.rover.lease:
+                raise ValueError('Для общей миссии нужен свободный ровер')
+            await self.stop_cameras()
+            from scan_two_drones import Inventory
+            self.inventory = Inventory(self.map_path)
+            self.inventory.save(self.output)
+            await self.start_cameras('cv')
+        completed = await self.robot.run_mission(routes)
+        if not completed or self.inspection_cancelled or not self.config.get('rover_inspection', {}).get('enabled'):
+            return
+        await self.stop_cameras()
+        if self.inventory is None:
+            raise ValueError('Осмотр ровером не запущен: нет результатов CV дронов')
+        boxes = [{'marker_id': int(k), 'anomaly': v == 'аномалия'}
+                 for k, v in sorted(self.inventory.states.items()) if v in ('занято', 'аномалия')]
+        if not any(b['anomaly'] for b in boxes):
+            self.inspection_status = 'Адресов с аномалиями нет'
+            self.log(self.inspection_status)
+            return
+        if self.rover is None or self.rover.lease:
+            raise ValueError('Ровер недоступен или занят ручным управлением')
+        await self.stop_rover_camera()
+        cfg = self.config['rover_inspection']
+        folder = self.output.parent / ('inspection-' + time.strftime('%Y%m%d-%H%M%S') + '-' + secrets.token_hex(3))
+        folder.mkdir(parents=True)
+        job = folder/'job.json'
+        job.write_text(json.dumps({'schema_version':1, 'mission_id':folder.name, 'boxes':boxes}, ensure_ascii=False, indent=2))
+        self.inspection_status = str(folder/'result'/'result.json')
+        self.log('Начинается осмотр дефектных коробок ровером. Отчёт: ' + self.inspection_status)
+        with (folder/'mission.log').open('wb') as logfile:
+            if self.inspection_cancelled:return
+            process = await asyncio.create_subprocess_exec(
+                sys.executable, '-m', 'rover.dock_mission', 'run',
+                '--url', self.config['rover']['base_url'], '--job', str(job),
+                '--dock', str(ROOT/cfg['dock']), '--map', cfg['map'],
+                '--output', str(folder/'result'), cwd=ROOT, stdout=logfile, stderr=logfile)
+            self.inspection_process = process
+            try:
+                if self.inspection_cancelled:process.send_signal(signal.SIGINT)
+                code = await process.wait()
+                if code:raise RuntimeError('Осмотр ровером прерван. Подробности: ' + str(folder/'mission.log'))
+            finally:
+                self.inspection_process = None
+
+    def cancel_inspection(self):
+        self.inspection_cancelled = True
+        if self.inspection_process and self.inspection_process.returncode is None:
+            self.inspection_process.send_signal(signal.SIGINT)
+
     def stop_all(self):
+        self.cancel_inspection()
         if self.mission_active():
             self.robot.stop_requested.set()
             self.log('Запрошена остановка маршрутов и посадка обоих', 'warning')
@@ -207,7 +264,7 @@ class Station:
                             from scan_two_drones import Inventory
                             self.processor = await asyncio.to_thread(BoxProcessor, ROOT/self.config['weights'],
                                 self.config.get('device', 'cpu'), .25, self.config['dictionary'])
-                            self.inventory = Inventory(self.map_path)
+                            self.inventory = self.inventory or Inventory(self.map_path)
                         output, result = await asyncio.to_thread(self.processor.process, frame)
                         ok, jpeg = cv2.imencode('.jpg', output)
                         if not ok:
@@ -301,6 +358,7 @@ class Station:
         } for key, spec in self.config['drones'].items()],
             'routes': self.routes, 'map': self.map, 'camera_mode': self.camera_mode,
             'mission_active': self.mission_active(),
+            'inspection_status': self.inspection_status,
             'states': self.inventory.states if self.inventory else {},
             'unmatched': self.inventory.unmatched if self.inventory else {},
             'events': list(self.events), 'jobs': list(self.jobs.values())[-20:],
@@ -372,6 +430,9 @@ async def api(request):
     if action == 'rover':
         if station.rover is None:raise ValueError('Ровер не настроен')
         operation=data.get('operation')
+        if operation in ('begin', 'pulse') and station.mission_active():
+            raise ValueError('Ручное управление заблокировано на время общей миссии')
+        if operation == 'stop':station.cancel_inspection()
         try:
             if operation=='begin':
                 result=await station.rover.begin(data['direction'],data.get('speed',.12),data.get('turn_speed',.4))
@@ -444,6 +505,7 @@ def create_app(station, robot_port=8000, robot_host='0.0.0.0', listen_robots=Tru
                 listener = await serve(station.robot.handler, robot_host, robot_port, ping_interval=2, ping_timeout=5)
             yield
         finally:
+            station.cancel_inspection()
             station.robot.stop_requested.set()
             station.camera_stop.set()
             if station.rover:await station.rover.close()

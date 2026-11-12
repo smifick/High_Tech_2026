@@ -124,6 +124,7 @@ class WsServer:
                 if isinstance(result, BaseException):
                     raise result
             log.info('Миссия остановлена' if self.stop_requested.is_set() else 'Оба маршрута завершены')
+            return not self.stop_requested.is_set()
         finally:
             self.stop_requested.set()
             # Finish the current legacy command before landing; no concurrent SDK calls.

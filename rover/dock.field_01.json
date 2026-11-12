@@ -26,7 +26,10 @@
       5.051
     ]
   ],
-  "box_offset_m": null,
+  "box_offset_m": [
+    -0.275,
+    0
+  ],
   "box_radius_m": 0.26,
   "clearance_m": 0.23,
   "camera_distance_m": 0.72,

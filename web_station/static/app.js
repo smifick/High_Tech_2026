@@ -51,6 +51,7 @@ function render(data) {
   $('#start-mission').disabled=online!==2 || data.drones.some(d=>d.busy);
   $('#stop-all').disabled=online===0 && !data.rover?.status?.connected;
   renderRover(data.rover);
+  $('#inspection-status').textContent=data.inspection_status||'';
   $('#camera-mode').disabled=data.camera_mode!=='off';
   $('#cameras').textContent=data.camera_mode==='off'?'Включить камеры':'Остановить камеры';
   $('#reset-inventory').disabled=data.camera_mode!=='off';
@@ -82,7 +83,7 @@ $('#stop-all').onclick=task(async()=>{await post('stop');releaseRover();notice('
 $('#cameras').onclick=task(async()=>{await post('cameras',{mode:state.camera_mode==='off'?$('#camera-mode').value:'off'});notice('Запрос изменения режима камер принят.');});
 function routeInput(){const data=JSON.parse($('#routes').value);if(!data.routes)throw new Error('JSON должен содержать объект routes');return data.routes}
 $('#validate-routes').onclick=task(async()=>{await post('routes',{routes:routeInput()});notice('Маршруты корректны; горизонтальный зазор между заданными участками не менее 0,75 м.');});
-$('#start-mission').onclick=task(async()=>{const routes=routeInput();await post('routes',{routes});if(!await confirmAction('Запустить маршруты двух дронов?',Object.entries(routes).map(([id,r])=>`${id}: ${r.points.length} точек, высота ${r.height??1.7} м`).join('. ')+'. Команды начнут выполняться сразу.'))return;await post('mission',{routes});notice('Маршруты запущены. Следите за подтверждениями и состоянием дронов.');});
+$('#start-mission').onclick=task(async()=>{const routes=routeInput();await post('routes',{routes});if(!await confirmAction('Запустить маршруты двух дронов?',Object.entries(routes).map(([id,r])=>`${id}: ${r.points.length} точек, высота ${r.height??1.7} м`).join('. ')+'. После посадки обоих дронов ровер автоматически проверит адреса с аномалиями и вернётся в гараж. Команды начнут выполняться сразу.'))return;await post('mission',{routes});notice('Маршруты запущены. Следите за подтверждениями и состоянием дронов.');});
 $('#route-file').onchange=task(async e=>{const file=e.target.files[0];if(!file)return;if(file.size>128*1024)throw new Error('Файл слишком большой');const data=JSON.parse(await file.text());if(!data.routes)throw new Error('Нет объекта routes');$('#routes').value=JSON.stringify(data,null,2);notice('Маршруты загружены в редактор. Полёт не запущен.');});
 $('#settings-form').onsubmit=task(async e=>{e.preventDefault();const cameras={};for(const input of document.querySelectorAll('[data-camera-id]'))cameras[input.dataset.cameraId]=input.value;await post('config',{cameras});notice('Адреса камер применены для текущего запуска.');});
 $('#reset-inventory').onclick=task(async()=>{if(!await confirmAction('Начать новый обход?','Накопленные состояния адресов текущей сессии будут очищены. Полёт не запускается.'))return;await post('reset');notice('Результаты очищены. Можно включить камеры.');});
@@ -93,29 +94,52 @@ function releaseRover(){
   const hold=roverHold;if(!hold)return;
   roverHold=null;hold.released=true;clearTimeout(hold.timer);
   hold.button.classList.remove('held');$('#rover-hold-status').textContent='Управление не удерживается';
-  if(hold.lease)post('rover',{operation:'stop',lease:hold.lease}).catch(e=>notice(e.message,true));
+  if(hold.lease)roverStopping=post('rover',{operation:'stop',lease:hold.lease}).catch(e=>notice(e.message,true));
 }
 async function pulseRover(hold){
   if(hold!==roverHold)return;
   try{await post('rover',{operation:'pulse',lease:hold.lease});
-    if(hold===roverHold)hold.timer=setTimeout(()=>pulseRover(hold),80);
-  }catch(e){releaseRover();notice(e.message,true)}
+    if(hold===roverHold)hold.timer=setTimeout(()=>pulseRover(hold),40);
+  }catch(e){if(roverHold===hold)releaseRover();notice(e.message,true)}
+}
+let roverStarting=false;
+let roverStopping=Promise.resolve();
+async function startRover(button, key=null){
+  if(roverHold||roverStarting||button.disabled||!apiReady)return;
+  if(!$('#rover-speed').reportValidity()||!$('#rover-turn-speed').reportValidity())return;
+  const hold={button,key,released:false};roverHold=hold;roverStarting=true;
+  button.classList.add('held');$('#rover-hold-status').textContent='Управление удерживается';
+  try{
+    await roverStopping;
+    if(hold.released)return;
+    const result=await post('rover',{operation:'begin',direction:button.dataset.drive,speed:Number($('#rover-speed').value),turn_speed:Number($('#rover-turn-speed').value)});
+    hold.lease=result.lease;
+    if(hold.released||hold!==roverHold)await post('rover',{operation:'stop',lease:hold.lease});
+    else hold.timer=setTimeout(()=>pulseRover(hold),40);
+  }catch(error){if(roverHold===hold)releaseRover();notice(error.message,true)}
+  finally{roverStarting=false}
 }
 for(const button of document.querySelectorAll('[data-drive]')){
-  button.onpointerdown=async e=>{
-    if(e.button!==0||roverHold||!apiReady)return;e.preventDefault();
-    if(!$('#rover-speed').reportValidity()||!$('#rover-turn-speed').reportValidity())return;
-    const hold={button,released:false};roverHold=hold;button.setPointerCapture(e.pointerId);button.classList.add('held');
-    $('#rover-hold-status').textContent='Кнопка удерживается';
-    try{const result=await post('rover',{operation:'begin',direction:button.dataset.drive,speed:Number($('#rover-speed').value),turn_speed:Number($('#rover-turn-speed').value)});
-      hold.lease=result.lease;
-      if(hold.released||hold!==roverHold)await post('rover',{operation:'stop',lease:hold.lease});
-      else hold.timer=setTimeout(()=>pulseRover(hold),80);
-    }catch(error){if(roverHold===hold)releaseRover();notice(error.message,true)}
+  button.onpointerdown=e=>{
+    if(e.button!==0||roverHold||roverStarting||button.disabled)return;
+    e.preventDefault();button.setPointerCapture(e.pointerId);startRover(button);
   };
-  for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,releaseRover);
+  for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,()=>{
+    if(roverHold?.button===button && roverHold.key===null)releaseRover();
+  });
   button.oncontextmenu=e=>e.preventDefault();
 }
+const roverKeys={KeyW:'forward',KeyS:'backward',KeyA:'left',KeyD:'right',KeyQ:'turn_right',KeyE:'turn_left'};
+function roverTyping(target){return target?.isContentEditable || Boolean(target?.closest?.('input,textarea,select,[contenteditable],dialog[open]'))}
+document.addEventListener('keydown',e=>{
+  if($('#tab-rover').hidden||document.hidden||roverTyping(e.target)||document.querySelector('dialog[open]'))return;
+  if(e.code==='Space'){e.preventDefault();releaseRover();if(!e.repeat)post('rover',{operation:'stop'}).catch(error=>notice(error.message,true));return}
+  const direction=roverKeys[e.code];if(!direction||e.ctrlKey||e.altKey||e.metaKey)return;
+  e.preventDefault();if(e.repeat)return;
+  startRover(document.querySelector(`[data-drive="${direction}"]`),e.code);
+});
+document.addEventListener('keyup',e=>{if(roverHold?.key===e.code){e.preventDefault();releaseRover()}});
+document.addEventListener('focusin',e=>{if(roverTyping(e.target))releaseRover()});
 window.addEventListener('blur',releaseRover);
 window.addEventListener('pagehide',releaseRover);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseRover()});
@@ -123,13 +147,13 @@ $('#rover-stop').onclick=task(async()=>{releaseRover();await post('rover',{opera
 $('#rover-camera').onclick=task(async()=>{await post('rover-camera',{mode:state.rover.camera_mode==='off'?$('#rover-mode').value:'off'});});
 function renderRover(rover){
   const connected=Boolean(rover?.status?.connected),info=rover?.camera||{},drive=rover?.status?.drive||{};
-  $('#rover-status').textContent=connected?'Ровер подключён':'Нет связи с ровером';$('#rover-status').className='badge '+(connected?'good':'bad');
-  for(const b of document.querySelectorAll('[data-drive]'))b.disabled=!connected||(['left','right'].includes(b.dataset.drive)&&drive.drive_type!=='mecanum');
+  $('#rover-status').textContent=connected?(rover.status.degraded?'Связь нестабильна':'Ровер подключён'):'Нет связи с ровером';$('#rover-status').className='badge '+(connected?'good':'bad');
+  for(const b of document.querySelectorAll('[data-drive]'))b.disabled=state.mission_active||!connected||(['left','right'].includes(b.dataset.drive)&&drive.drive_type!=='mecanum');
   if(!connected)releaseRover();
   $('#rover-camera').disabled=!rover?.available;
   $('#rover-camera').textContent=rover?.camera_mode==='off'?'Включить камеру':'Остановить камеру';
   $('#rover-mode').disabled=rover?.camera_mode!=='off';
-  $('#rover-drive-status').textContent=connected?`${drive.drive_type} · watchdog ${drive.timeout_sec} с · ограничение панели 0,2 м/с`:rover?.status?.error||'Адаптер не подключён';
+  $('#rover-drive-status').textContent=connected?`${rover.status.degraded?'Задержка опроса · ':''}${drive.drive_type} · watchdog ${drive.timeout_sec} с · ограничение панели 0,2 м/с`:rover?.status?.error||'Адаптер не подключён';
   const age=info.received_at?Math.round(Date.now()/1000-info.received_at):null;
   $('#rover-camera-status').textContent=info.error|| (rover?.camera_mode==='off'?'Камера выключена · показан последний снимок':age===null?'Ожидание снимка…':`Снимок #${info.frame} · ${age} с назад · ${info.cycle_ms} мс`);
   if(info.frame&&lastFrames.get('rover')!==info.frame){const img=$('#rover-image');img.onload=()=>{img.hidden=false;$('#rover-placeholder').hidden=true};img.src='/api/image?id=rover&mode=cv&v='+info.frame;lastFrames.set('rover',info.frame)}

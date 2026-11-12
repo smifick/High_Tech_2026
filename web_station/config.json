@@ -17,5 +17,10 @@
   "rover": {
     "base_url": "http://10.11.3.195:8765",
     "camera_url": "http://10.11.3.195:8765/api/camera/media/frame?mode=live"
+  },
+  "rover_inspection": {
+    "enabled": true,
+    "dock": "rover/dock.field_01.json",
+    "map": "archive/field_01_20261111_125402/map.yaml"
   }
 }

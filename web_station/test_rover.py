@@ -50,3 +50,29 @@ class RoverTests(unittest.IsolatedAsyncioTestCase):
         await self.adapter.stop(lease)
         self.assertEqual(self.adapter.lease,new)
         self.assertEqual(self.commands[-1]['linear_x'],-.12)
+
+    async def test_status_timeout_grace_and_recovery(self):
+        from unittest.mock import AsyncMock
+        self.adapter.stop_event.set()
+        await self.adapter.poll_task
+        original = self.adapter.request
+        self.adapter.request = AsyncMock(side_effect=TimeoutError())
+        await self.adapter.poll_once()
+        self.assertTrue(self.adapter.status['connected'])
+        self.assertTrue(self.adapter.status['degraded'])
+        self.adapter.last_status_ok = time.monotonic()-7
+        await self.adapter.poll_once()
+        self.assertFalse(self.adapter.status['connected'])
+        with self.assertRaises(ValueError):await self.adapter.begin('forward')
+        self.adapter.request = original
+        await self.adapter.poll_once()
+        self.assertTrue(self.adapter.status['connected'])
+        self.assertFalse(self.adapter.status['degraded'])
+        self.assertEqual(self.commands, [])
+
+    async def test_first_status_failure_is_not_connected(self):
+        from unittest.mock import AsyncMock
+        adapter = RoverAdapter('http://unused', lambda *a: None)
+        adapter.request = AsyncMock(side_effect=TimeoutError())
+        await adapter.poll_once()
+        self.assertFalse(adapter.status['connected'])

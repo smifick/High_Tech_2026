@@ -5,6 +5,8 @@ import secrets
 import time
 from aiohttp import ClientTimeout
 
+STATUS_MAX_AGE = 6.0
+
 DIRECTIONS = {'forward':(1,0,0), 'backward':(-1,0,0), 'left':(0,1,0),
               'right':(0,-1,0), 'turn_left':(0,0,1), 'turn_right':(0,0,-1)}
 
@@ -20,12 +22,14 @@ class RoverAdapter:
         self.command = None
         self.poll_task = None
         self.stop_event = asyncio.Event()
+        self.last_status_ok = None
+        self.status_failures = 0
         self.status = {'connected':False,'error':None,'checked_at':None,'drive':{}}
 
-    async def request(self, path, payload=None):
+    async def request(self, path, payload=None, timeout=1.5):
         if self.session is None:
             raise ValueError('Адаптер ровера ещё не подключён')
-        kwargs={'timeout':ClientTimeout(total=1.5)}
+        kwargs={'timeout':ClientTimeout(total=timeout)}
         if payload is not None:kwargs['json']=payload
         async with self.session.request('GET' if payload is None else 'POST', self.base+path, **kwargs) as response:
             response.raise_for_status()
@@ -34,14 +38,28 @@ class RoverAdapter:
                 raise ValueError(result.get('error','Ровер отклонил запрос'))
             return result
 
+    async def poll_once(self):
+        try:
+            drive = await self.request('/api/drive', timeout=2.5)
+            self.last_status_ok = time.monotonic()
+            self.status_failures = 0
+            self.status.update(connected=True, degraded=False, error=None,
+                               checked_at=time.time(), drive=drive, failures=0)
+        except Exception as error:
+            self.status_failures += 1
+            fresh = self.status_is_fresh()
+            self.status.update(connected=fresh, degraded=fresh,
+                               failures=self.status_failures,
+                               error=str(error) or type(error).__name__)
+
+    def status_is_fresh(self):
+        return (self.last_status_ok is not None and
+                time.monotonic() - self.last_status_ok < STATUS_MAX_AGE)
+
     async def poll(self):
         while not self.stop_event.is_set():
-            try:
-                drive=await self.request('/api/drive')
-                self.status.update(connected=True,error=None,checked_at=time.time(),drive=drive)
-            except Exception as error:
-                self.status.update(connected=False,error=str(error) or type(error).__name__)
-            try:await asyncio.wait_for(self.stop_event.wait(),2)
+            await self.poll_once()
+            try:await asyncio.wait_for(self.stop_event.wait(), 1)
             except TimeoutError:pass
 
     async def start(self, session):
@@ -54,7 +72,7 @@ class RoverAdapter:
         for value, maximum in ((speed,.2),(turn_speed,.7)):
             if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or not 0 < value <= maximum:
                 raise ValueError('Скорость должна быть 0..0.2 м/с; поворот 0..0.7 рад/с')
-        if not self.status['connected'] or time.time()-(self.status['checked_at'] or 0)>5:
+        if not self.status['connected'] or not self.status_is_fresh():
             raise ValueError('Нет свежего статуса ровера')
         if direction in ('left','right') and self.status['drive'].get('drive_type')!='mecanum':
             raise ValueError('Боковой ход доступен только для mecanum')

@@ -12,6 +12,7 @@ from websockets.asyncio.server import serve
 from server import Station, create_app, ROOT
 
 CONFIG = json.loads(Path(__file__).with_name('config.json').read_text())
+CONFIG.pop('rover_inspection', None)
 CONFIG.pop('rover', None)  # Tests must never contact physical hardware
 
 
@@ -71,6 +72,13 @@ class StationTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(state['camera_mode'],'off')
         self.assertEqual(self.messages,[])
         self.assertEqual(self.station.camera_tasks,{})
+
+    async def test_cancelled_flight_never_starts_inspection(self):
+        from unittest.mock import AsyncMock, patch
+        self.station.robot.run_mission = AsyncMock(return_value=False)
+        with patch('server.asyncio.create_subprocess_exec', new_callable=AsyncMock) as spawn:
+            await self.station.flight_and_inspection(self.station.routes)
+            spawn.assert_not_awaited()
 
     async def test_disconnected_rejected(self):
         response=await self.post('command',{'id':'drone3','command':'navigate','params':{'x':0,'y':0,'z':1}})
