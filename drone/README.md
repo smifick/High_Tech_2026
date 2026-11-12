@@ -14,7 +14,7 @@ python3 flight_aruco.py
 ```
 
 ## Web socket client
-Описан класс взаимодействия с внешним вычислителем через протокол web socket
+Управление двумя дронами по заданным X/Y-маршрутам в `aruco_map`: [инструкция, формат маршрутов и запуск](aruco_nav/README.md). Сервер — `aruco_nav/ws_control.py`, бортовой клиент — `aruco_nav/ws_flight.py`.
 
 # Подготовка датасета
 
@@ -42,3 +42,8 @@ scp -r sverk@<ip>:~/phtos ./path_on_your_pc
 
 ## Пример фото:
 ![example.jpg](prepare_dataset/assets/example.jpg)
+
+
+## Видео в реальном времени для CV
+
+[Два скрипта: камера на дроне и обработка YOLO + ArUco на ноутбуке](video/README.md). На дрон копируется только `video/video_sender.py`; на ноутбуке запускается `YOLO/scripts/video_receiver.py`.

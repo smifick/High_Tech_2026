@@ -2,7 +2,7 @@
   "seed": 42,
   "dictionary": "DICT_4X4_100",
   "step_m": 0.85,
-  "drone_count": 2,
+  "drone_count": 4,
   "slots": [
     {
       "marker_id": 0,
