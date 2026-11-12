@@ -7,7 +7,7 @@
 Из корня проекта, в существующем venv:
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements-web.txt
 python3 web_station/server.py
 ```
 
@@ -17,9 +17,9 @@ python3 web_station/server.py
 
 ```bash
 # Первый дрон
-python3 ws_flight.py --server ws://IP_НОУТБУКА:8000 --id drone3
+python3 drone/aruco_nav/ws_flight.py --server ws://IP_НОУТБУКА:8000 --id drone3
 # Второй дрон
-python3 ws_flight.py --server ws://IP_НОУТБУКА:8000 --id drone4
+python3 drone/aruco_nav/ws_flight.py --server ws://IP_НОУТБУКА:8000 --id drone4
 ```
 
 Текущие ID `drone3`/`drone4` взяты из `drone/aruco_nav/routes.example.json`. В `web_station/config.json` заданы соответствия камер: drone3 → 10.11.3.225, drone4 → 10.11.3.179. Если физическое соответствие другое, измените его до использования. Там же настраиваются карта, маршруты, веса, словарь и устройство CPU/GPU.
