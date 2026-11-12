@@ -1,6 +1,0 @@
-# CPU/headless web panel; simulator and vendor ROS SDK are not needed here.
-ultralytics>=8.3,<9
-opencv-contrib-python-headless>=4.10,<5
-numpy>=1.26,<3
-websockets>=14,<18
-aiohttp>=3.10,<4

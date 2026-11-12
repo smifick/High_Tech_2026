@@ -7,24 +7,23 @@
 YOLO11n определяет коробку и видимые аномалии; ArUco задаёт постоянный адрес места.
 
 
-Установка и запуск:
+## Статус и запуск
+
+Это архив материалов baseline, а не текущий конвейер веб-панели.
+Обучение представлено в [ноутбуке](train/High_Tech_MEPHI.ipynb).
+Отдельных `train.py`, `infer.py` и `logic.py` в этой папке нет.
+Описанные ниже состояния и формат попытки относятся к проекту прототипа;
+актуальные выходные файлы перечислены в [документации панели](../../../web_station/README.md).
+
+Из корня репозитория:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-# Укажите путь к данным в data.yaml
-python train.py --device 0 --epochs 100
-# Без CUDA: --device cpu (существенно медленнее)
-python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
-  --source frames/drone1 --attempt attempts/001 --agent drone-1
-python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
-  --source frames/drone2 --attempt attempts/001 --agent drone-2
-python infer.py --weights runs/boxes/weights/best_drone_photos_yolo.pt \
-  --source frames/rover/place24 --attempt attempts/001 \
-  --view side --place-id 24 --agent rover
-python -m unittest discover -s tests -v
+python -m pip install -r requirements.txt
+python YOLO/scripts/detect.py /путь/к/снимку.jpg
 ```
+
+Веса baseline выбираются по умолчанию; другие можно указать через `--weights`.
+
 ## Данные и разметка
 
 ```text
@@ -89,17 +88,15 @@ Ultralytics распространяется на условиях AGPL-3.0/ко
 
 | Файл | Назначение |
 |---|---|
-| `train.py` | Обучение трёхклассового YOLO11n |
-| `infer.py` | Обработка кадров и формирование ведомости |
-| `logic.py` | Определение состояния и объединение наблюдений |
-| `config.json` | ArUco, область места и пороги решений |
-| `data.yaml` | Пути датасета и классы |
-| `tests` | Тесты логики решений |
+| `train/High_Tech_MEPHI.ipynb` | Ноутбук обучения |
+| `weights/best_drone_photos_yolo.pt` | Веса baseline для диагностического скрипта |
+| `data.yaml` | Настройки датасета; пути требуют проверки на целевой машине |
+| `config.json` | Сохранённая конфигурация прототипа |
 
 ## Приложения
 Результаты обучения
 F1-Confidence Curve
-![Результаты обучения](YOLO/YOLO11n_models/YOLO11n_baseline/train/training_info/BoxF1_curve.png)
-Распознавание объектов
-![Результаты обучения](YOLO/YOLO11n_models/YOLO11n_baseline/train/training_info/val_batch0_labels.jpg)
+![Результаты обучения](train/training_info/BoxF1_curve.png)
+Пример сохранённого результата сопоставления (не независимая оценка качества)
+![Результат сопоставления](assets/matched_result.jpg)
 

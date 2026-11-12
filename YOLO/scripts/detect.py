@@ -8,14 +8,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("image", help="Путь к картинке")
     parser.add_argument("--conf", type=float, default=0.25)
+    parser.add_argument('--weights', type=Path,
+                        default=Path(__file__).resolve().parents[1] / 'YOLO11n_models/YOLO11n_baseline/weights/best_drone_photos_yolo.pt')
     args = parser.parse_args()
+    if not args.weights.is_file():
+        parser.error(f'Веса не найдены: {args.weights}')
 
     image = Path(args.image)
     if not image.is_file():
         parser.error(f"Не найдена картинка: {image}")
 
     folder = Path(__file__).resolve().parent
-    model = YOLO(str(folder / "best_drone_photos_yolo.pt"))
+    model = YOLO(str(args.weights))
 
     result = model.predict(
         source=str(image),

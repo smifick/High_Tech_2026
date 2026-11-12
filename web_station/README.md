@@ -7,7 +7,7 @@
 Из корня проекта, в существующем venv:
 
 ```bash
-python3 -m pip install -r requirements-web.txt
+python3 -m pip install -r requirements.txt
 python3 web_station/server.py
 ```
 
@@ -54,7 +54,7 @@ python3 web_station/server.py --port 8766 --robot-port 8001
 
 ## Ровер
 
-Есть отдельная вкладка со статусом будущего подключения. Управление ровером намеренно не выдаётся за работающее: `rover/rover_client.py` использует `shared/WsClient` с регистрацией `ok`, тогда как дроны ожидают JSON `registered`. Следующий этап — отдельный адаптер, сервер/порт и описание параметров navigate/stop ровера. Архитектура панели отделяет командный транспорт `ObservedServer`, состояние `Station`, HTTP API и интерфейс; дроновый адаптер не потребуется переписывать ради ровера.
+Рабочая панель использует HTTP-адаптер `rover_adapter.py`. Подробности управления и камеры приведены ниже. Общий WS-клиент из `rover/rover_client.py` остаётся отдельным прототипом.
 
 ## Проверки
 
