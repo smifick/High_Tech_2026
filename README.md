@@ -1,5 +1,8 @@
 # Инвентаризация площадки хранения · Хайтек 2026
 
+В результате попытки: было 3 обычные коробки и 2 дефектные.
+Расположение определено верно, а определние класса 60% правильно (определено 4 аномалии и 1 нормальная)
+
 Попытка на видео (что видит дрон): https://drive.google.com/file/d/1VvXHvpCDJxM4O1XlpE4hmhHjxiKaOhlj/view?usp=sharing
 Попытка на видео (со стороны): https://drive.google.com/file/d/1LLAdraTfVec3f4UlGJzV0mMsmK19kSP6/view?usp=sharing
 
