@@ -669,5 +669,5 @@ PYTHONPATH=.:simulation/logic python simulation/scripts/scan_field.py
 - [Инструкция по работе с YOLO, предоставленная экспертами](https://docs.radxa.com/en/cubie/a7z/app-dev/npu-dev/model-zoo/model-zoo-download).
 - Документация по развертыванию docker контейнеров
 ## 17. Дополнительные материалы
-- [Экономическая эффективность](https://github.com/smifick/High_Tech_2026/blob/main/%D0%AD%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C_%D0%9D%D0%98%D0%AF%D0%A3%20%D0%9C%D0%98%D0%A4%D0%98.docx)
+- [Экономическая эффективность](https://github.com/smifick/High_Tech_2026/blob/main/%D0%9D%D0%98%D0%AF%D0%A3%20%D0%9C%D0%98%D0%A4%D0%98_%D0%AD%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D1%8C.docx)
 Для удобства ссылка на [гугл диск](https://docs.google.com/document/d/1TzZd3jpr0pPZ96yio8IpH1pHM3hNWJbs/edit?usp=sharing&ouid=105416183536784711294&rtpof=true&sd=true)
