@@ -111,3 +111,11 @@ true`). Для сценария с управлением ровером пил�
 Актуальный набор проверок: `python -m unittest discover -s web_station -p
  'test_*.py' -v` — 17 тестов; дополнительно
 `node web_station/test_rover_keyboard.cjs` проверяет клавиатурное управление.
+
+
+## Приме интерфейса
+![photo_5454300740563181600_y.jpg](assets/photo_5454300740563181600_y.jpg)
+![photo_5454300740563181599_y.jpg](assets/photo_5454300740563181599_y.jpg)
+![photo_5454300740563181598_y.jpg](assets/photo_5454300740563181598_y.jpg)
+![photo_5454300740563181597_y.jpg](assets/photo_5454300740563181597_y.jpg)
+
