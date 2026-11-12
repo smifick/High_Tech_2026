@@ -1,5 +1,8 @@
 # Инвентаризация площадки хранения · Хайтек 2026
 
+Попытка на видео (что видит дрон): https://drive.google.com/file/d/1VvXHvpCDJxM4O1XlpE4hmhHjxiKaOhlj/view?usp=sharing
+Попытка на видео (со стороны): https://drive.google.com/file/d/1LLAdraTfVec3f4UlGJzV0mMsmK19kSP6/view?usp=sharing
+
 Команда НИЯУ МИФИ. Компетенция «Технологии ИИ в комплексных беспилотных системах».
 
 Рабочая конфигурация — **два дрона, ровер и внешняя станция с YOLO**.
