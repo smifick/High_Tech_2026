@@ -285,3 +285,8 @@ python -m unittest discover -s tests -v
 - [Описание сбора с двух камер](YOLO/scripts/TWO_DRONES.md).
 - [Оборудование Сверх](https://edu.sverk.tech), [исходный SDK](https://github.com/sverk-tech/sverk-ros2).
 - [Обучение классификатора](YOLO/YOLO11n_models/YOLO_model_classificator/README.md).
+
+
+## Веб-панель управления
+
+Локальная панель для двух дронов, камер, маршрутов и карты ArUco: [web_station/README.md](web_station/README.md). Запуск: `python3 web_station/server.py`, затем http://127.0.0.1:8766/.
