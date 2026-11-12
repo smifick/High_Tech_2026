@@ -332,10 +332,6 @@ python -m unittest discover -s web_station -p 'test_station.py' -v
 
 ## 11. Сроки и доказательства выполнения
 
-Плановые даты сохранены отдельно от фактической готовности. Заменять «в процессе»
-на «готово» без протокола нельзя: наличие нового кода не доказывает соблюдение
-срока или успешные испытания.
-
 | Модуль | Плановый срок (2026) | Что подтверждено |
 |---|---|---|
 | Подготовка | 10.11 | Датасет/ноутбуки/веса в репозитории; дата окончания отдельно не подтверждена |
@@ -364,6 +360,9 @@ python -m unittest discover -s web_station -p 'test_station.py' -v
 
 ## 14. Материалы
 
+- [Результаты после обучения модели классификатора](https://drive.google.com/drive/folders/1b3oB2u8srfRB1A5QLkViTTJQDKzbap3d?usp=sharing)
+- [Результаты после обучения модели finetune](https://drive.google.com/drive/folders/1f9cjJHpp2opHP6OW4OBjlA1qckjV0ylG?usp=sharing)
+- [Результат после обучения baseline модели](https://drive.google.com/drive/folders/1tduDOjbsDDQjkWhqwjAFjiPjvSVqWEFl?usp=sharing)
 - [Экономическая эффективность](НИЯУ%20МИФИ_Экономическая%20эффективность.docx).
 - [Экономические расчёты](economic/readme.md).
 - [Дополнительный документ Google Drive](https://docs.google.com/document/d/1TzZd3jpr0pPZ96yio8IpH1pHM3hNWJbs/edit).
