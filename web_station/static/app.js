@@ -19,6 +19,7 @@ async function confirmAction(title,text) {
   return new Promise(resolve => dialog.addEventListener('close',()=>resolve(dialog.returnValue==='go'),{once:true}));
 }
 for (const button of document.querySelectorAll('nav button')) button.onclick=()=>{
+  releaseRover();
   for(const tab of document.querySelectorAll('.tab')) tab.hidden=tab.id!=='tab-'+button.dataset.tab;
   for(const nav of document.querySelectorAll('nav button')) nav.classList.toggle('selected',nav===button);
   $('#page-title').textContent=labels[button.dataset.tab];
@@ -48,7 +49,8 @@ function render(data) {
   $('#connection').textContent='Станция онлайн';$('#connection').className='badge good';
   $('#mission-badge').textContent=data.mission_active?'Выполняется':'Ожидание';
   $('#start-mission').disabled=online!==2 || data.drones.some(d=>d.busy);
-  $('#stop-all').disabled=online===0;
+  $('#stop-all').disabled=online===0 && !data.rover?.status?.connected;
+  renderRover(data.rover);
   $('#camera-mode').disabled=data.camera_mode!=='off';
   $('#cameras').textContent=data.camera_mode==='off'?'Включить камеры':'Остановить камеры';
   $('#reset-inventory').disabled=data.camera_mode!=='off';
@@ -76,7 +78,7 @@ function render(data) {
   $('#address-list').innerHTML=Object.entries(data.states).map(([key,value])=>`<div>${escapeHTML(key)}: ${escapeHTML(value)}</div>`).join('')||'<p class="muted">Включите камеры с распознаванием, чтобы начать обход.</p>';
   $('#unmatched').innerHTML=data.drones.map(d=>`<p class="muted">${escapeHTML(d.name)}: ${(data.unmatched[d.id]||[]).length} без метки</p>`).join('');
 }
-$('#stop-all').onclick=task(async()=>{await post('stop');notice('Остановка запрошена. Дроны завершат текущую команду и выполнят посадку.');});
+$('#stop-all').onclick=task(async()=>{await post('stop');releaseRover();notice('Остановка ровера запрошена. Дроны завершат текущую команду и выполнят посадку.');});
 $('#cameras').onclick=task(async()=>{await post('cameras',{mode:state.camera_mode==='off'?$('#camera-mode').value:'off'});notice('Запрос изменения режима камер принят.');});
 function routeInput(){const data=JSON.parse($('#routes').value);if(!data.routes)throw new Error('JSON должен содержать объект routes');return data.routes}
 $('#validate-routes').onclick=task(async()=>{await post('routes',{routes:routeInput()});notice('Маршруты корректны; горизонтальный зазор между заданными участками не менее 0,75 м.');});
@@ -84,5 +86,53 @@ $('#start-mission').onclick=task(async()=>{const routes=routeInput();await post(
 $('#route-file').onchange=task(async e=>{const file=e.target.files[0];if(!file)return;if(file.size>128*1024)throw new Error('Файл слишком большой');const data=JSON.parse(await file.text());if(!data.routes)throw new Error('Нет объекта routes');$('#routes').value=JSON.stringify(data,null,2);notice('Маршруты загружены в редактор. Полёт не запущен.');});
 $('#settings-form').onsubmit=task(async e=>{e.preventDefault();const cameras={};for(const input of document.querySelectorAll('[data-camera-id]'))cameras[input.dataset.cameraId]=input.value;await post('config',{cameras});notice('Адреса камер применены для текущего запуска.');});
 $('#reset-inventory').onclick=task(async()=>{if(!await confirmAction('Начать новый обход?','Накопленные состояния адресов текущей сессии будут очищены. Полёт не запускается.'))return;await post('reset');notice('Результаты очищены. Можно включить камеры.');});
-async function poll(){try{const response=await fetch('/api/state');if(!response.ok)throw new Error('HTTP '+response.status);state=await response.json();apiReady=true;render(state)}catch(error){apiReady=false;$('#connection').textContent='Станция недоступна';$('#connection').className='badge bad';for(const button of document.querySelectorAll('.navigate,.land,#start-mission,#stop-all'))button.disabled=true}finally{setTimeout(poll,1000)}}
+async function poll(){try{const response=await fetch('/api/state');if(!response.ok)throw new Error('HTTP '+response.status);state=await response.json();apiReady=true;render(state)}catch(error){apiReady=false;releaseRover();for(const b of document.querySelectorAll('[data-drive]'))b.disabled=true;$('#connection').textContent='Станция недоступна';$('#connection').className='badge bad';for(const button of document.querySelectorAll('.navigate,.land,#start-mission,#stop-all'))button.disabled=true}finally{setTimeout(poll,1000)}}
+
+let roverHold=null;
+function releaseRover(){
+  const hold=roverHold;if(!hold)return;
+  roverHold=null;hold.released=true;clearTimeout(hold.timer);
+  hold.button.classList.remove('held');$('#rover-hold-status').textContent='Управление не удерживается';
+  if(hold.lease)post('rover',{operation:'stop',lease:hold.lease}).catch(e=>notice(e.message,true));
+}
+async function pulseRover(hold){
+  if(hold!==roverHold)return;
+  try{await post('rover',{operation:'pulse',lease:hold.lease});
+    if(hold===roverHold)hold.timer=setTimeout(()=>pulseRover(hold),80);
+  }catch(e){releaseRover();notice(e.message,true)}
+}
+for(const button of document.querySelectorAll('[data-drive]')){
+  button.onpointerdown=async e=>{
+    if(e.button!==0||roverHold||!apiReady)return;e.preventDefault();
+    if(!$('#rover-speed').reportValidity()||!$('#rover-turn-speed').reportValidity())return;
+    const hold={button,released:false};roverHold=hold;button.setPointerCapture(e.pointerId);button.classList.add('held');
+    $('#rover-hold-status').textContent='Кнопка удерживается';
+    try{const result=await post('rover',{operation:'begin',direction:button.dataset.drive,speed:Number($('#rover-speed').value),turn_speed:Number($('#rover-turn-speed').value)});
+      hold.lease=result.lease;
+      if(hold.released||hold!==roverHold)await post('rover',{operation:'stop',lease:hold.lease});
+      else hold.timer=setTimeout(()=>pulseRover(hold),80);
+    }catch(error){if(roverHold===hold)releaseRover();notice(error.message,true)}
+  };
+  for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,releaseRover);
+  button.oncontextmenu=e=>e.preventDefault();
+}
+window.addEventListener('blur',releaseRover);
+window.addEventListener('pagehide',releaseRover);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseRover()});
+$('#rover-stop').onclick=task(async()=>{releaseRover();await post('rover',{operation:'stop'});notice('Ровер: остановка подтверждена');});
+$('#rover-camera').onclick=task(async()=>{await post('rover-camera',{mode:state.rover.camera_mode==='off'?$('#rover-mode').value:'off'});});
+function renderRover(rover){
+  const connected=Boolean(rover?.status?.connected),info=rover?.camera||{},drive=rover?.status?.drive||{};
+  $('#rover-status').textContent=connected?'Ровер подключён':'Нет связи с ровером';$('#rover-status').className='badge '+(connected?'good':'bad');
+  for(const b of document.querySelectorAll('[data-drive]'))b.disabled=!connected||(['left','right'].includes(b.dataset.drive)&&drive.drive_type!=='mecanum');
+  if(!connected)releaseRover();
+  $('#rover-camera').disabled=!rover?.available;
+  $('#rover-camera').textContent=rover?.camera_mode==='off'?'Включить камеру':'Остановить камеру';
+  $('#rover-mode').disabled=rover?.camera_mode!=='off';
+  $('#rover-drive-status').textContent=connected?`${drive.drive_type} · watchdog ${drive.timeout_sec} с · ограничение панели 0,2 м/с`:rover?.status?.error||'Адаптер не подключён';
+  const age=info.received_at?Math.round(Date.now()/1000-info.received_at):null;
+  $('#rover-camera-status').textContent=info.error|| (rover?.camera_mode==='off'?'Камера выключена · показан последний снимок':age===null?'Ожидание снимка…':`Снимок #${info.frame} · ${age} с назад · ${info.cycle_ms} мс`);
+  if(info.frame&&lastFrames.get('rover')!==info.frame){const img=$('#rover-image');img.onload=()=>{img.hidden=false;$('#rover-placeholder').hidden=true};img.src='/api/image?id=rover&mode=cv&v='+info.frame;lastFrames.set('rover',info.frame)}
+  $('#rover-detections').innerHTML=(info.detections||[]).map(d=>`<p><span class="badge ${d.anomaly?'bad':'good'}">${d.anomaly?'Аномалия':'Коробка'}</span> ${Math.round(d.confidence*100)}%</p>`).join('')||'<p class="muted">Нет детекций в последнем снимке</p>';
+}
 poll();

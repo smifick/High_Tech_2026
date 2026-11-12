@@ -1,11 +1,21 @@
 {
   "drones": {
-    "drone3": {"name": "Дрон 3", "camera": "http://10.11.3.225:8080/snapshot?topic=/camera_1/image_raw"},
-    "drone4": {"name": "Дрон 4", "camera": "http://10.11.3.179:8080/snapshot?topic=/camera_1/image_raw"}
+    "drone3": {
+      "name": "Дрон 3",
+      "camera": "http://10.11.3.179:8080/snapshot?topic=/camera_1/image_raw"
+    },
+    "drone4": {
+      "name": "Дрон 4",
+      "camera": "http://10.11.3.225:8080/snapshot?topic=/camera_1/image_raw"
+    }
   },
   "routes": "drone/aruco_nav/routes.example.json",
   "map": "drone/aruco_nav/aruco_map_750x450_id100.txt",
   "weights": "YOLO/scripts/best_for_classificator(2).pt",
   "dictionary": "DICT_4X4_1000",
-  "device": "cpu"
+  "device": "cpu",
+  "rover": {
+    "base_url": "http://10.11.3.195:8765",
+    "camera_url": "http://10.11.3.195:8765/api/camera/media/frame?mode=live"
+  }
 }

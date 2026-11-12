@@ -45,7 +45,7 @@ class BoxProcessor:
         self.device = device
         self.conf = conf
 
-    def process(self, frame):
+    def process(self, frame, associate_markers=True):
         result = self.model.predict(frame, device=self.device, conf=self.conf, imgsz=640, agnostic_nms=True, verbose=False)[0]
         corners, ids, _ = self.detector.detectMarkers(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))
         markers = {} if ids is None else {
@@ -76,9 +76,13 @@ class BoxProcessor:
             x1, y1, x2, y2 = xyxy
             marker_id = match_box_to_marker(
                 [[x1, y1], [x2, y1], [x2, y2], [x1, y2]], markers, angle_deg=self.match_angle)
+            if not associate_markers:
+                marker_id = None
             color = (0, 0, 255) if name == 'box_hitech_defect' else (0, 200, 0)
             cv2.rectangle(output, (round(x1), round(y1)), (round(x2), round(y2)), color, 2)
             label = f'{name} {confidence:.2f} -> ArUco {marker_id if marker_id is not None else "None"}'
+            if not associate_markers:
+                label = f'{name} {confidence:.2f}'
             (width, height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, .5, 1)
             tx = max(0, min(round(x1), output.shape[1] - width - 4))
             ty = max(height + 4, min(round(y1) - 8, output.shape[0] - baseline - 4))

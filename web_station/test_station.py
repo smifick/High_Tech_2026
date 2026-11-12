@@ -12,6 +12,7 @@ from websockets.asyncio.server import serve
 from server import Station, create_app, ROOT
 
 CONFIG = json.loads(Path(__file__).with_name('config.json').read_text())
+CONFIG.pop('rover', None)  # Tests must never contact physical hardware
 
 
 class StationTests(unittest.IsolatedAsyncioTestCase):

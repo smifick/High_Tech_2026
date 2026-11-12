@@ -19,6 +19,7 @@ sys.path[:0] = [str(ROOT/'drone/aruco_nav'), str(ROOT/'YOLO/scripts')]
 from ws_control import WsServer
 from mission import load_mission, validate_routes, number
 from snapshot_camera import snapshot_url
+from rover_adapter import RoverAdapter
 
 STATIC = Path(__file__).with_name('static')
 DEFAULT_CONFIG = Path(__file__).with_name('config.json')
@@ -36,6 +37,11 @@ class Station:
         self.camera_tasks = {}
         self.camera_stop = asyncio.Event()
         self.cv_lock = asyncio.Lock()
+        self.rover = RoverAdapter(config['rover']['base_url'], self.log) if config.get('rover') else None
+        self.rover_camera_task = None
+        self.rover_camera_stop = asyncio.Event()
+        self.rover_camera_mode = 'off'
+        self.rover_camera_info = {'frame':0, 'received_at':None, 'error':None, 'detections':[]}
         self.processor = None
         self.inventory = None
         self.camera_mode = 'off'
@@ -223,6 +229,69 @@ class Station:
             except TimeoutError:
                 pass
 
+    async def start_rover_camera(self, mode):
+        if not self.rover:
+            raise ValueError('Ровер не настроен')
+        if mode not in ('raw','cv'):
+            raise ValueError('Режим камеры: raw или cv')
+        if self.rover_camera_task:
+            raise ValueError('Сначала остановите камеру ровера')
+        self.rover_camera_mode=mode
+        self.rover_camera_stop.clear()
+        self.rover_camera_task=asyncio.create_task(self.rover_camera_loop())
+        self.log('Камера ровера включена: '+mode)
+
+    async def stop_rover_camera(self):
+        self.rover_camera_stop.set()
+        if self.rover_camera_task:
+            await self.rover_camera_task
+        self.rover_camera_task=None
+        self.rover_camera_mode='off'
+
+    async def rover_camera_loop(self):
+        info=self.rover_camera_info
+        url=self.config['rover']['camera_url']
+        while not self.rover_camera_stop.is_set():
+            started=time.monotonic()
+            try:
+                async with self.session.get(url, timeout=ClientTimeout(total=5)) as response:
+                    response.raise_for_status()
+                    if 'image/jpeg' not in response.headers.get('Content-Type','').lower():
+                        raise ValueError('Камера ровера вернула не JPEG')
+                    data=bytearray()
+                    async for chunk in response.content.iter_chunked(65536):
+                        data.extend(chunk)
+                        if len(data)>16*1024*1024:raise ValueError('Слишком большой снимок')
+                received=time.time()
+                import cv2
+                import numpy as np
+                frame=cv2.imdecode(np.frombuffer(data,np.uint8),cv2.IMREAD_COLOR)
+                if frame is None:raise ValueError('Некорректный кадр ровера')
+                result={'detections':[]}
+                annotated=bytes(data)
+                if self.rover_camera_mode=='cv':
+                    async with self.cv_lock:
+                        if self.rover_camera_stop.is_set():break
+                        if self.processor is None:
+                            from box_detector import BoxProcessor
+                            from scan_two_drones import Inventory
+                            self.processor=await asyncio.to_thread(BoxProcessor, ROOT/self.config['weights'],
+                                self.config.get('device','cpu'),.25,self.config['dictionary'])
+                            self.inventory=Inventory(self.map_path)
+                        output,result=await asyncio.to_thread(self.processor.process,frame,associate_markers=False)
+                        ok,jpeg=cv2.imencode('.jpg',output)
+                        if not ok:raise ValueError('Не удалось кодировать кадр')
+                        annotated=jpeg.tobytes()
+                self.images['rover']={'raw':bytes(data),'cv':annotated}
+                info.update(frame=info['frame']+1,received_at=received,error=None,detections=result['detections'],
+                            cycle_ms=round((time.monotonic()-started)*1000))
+            except Exception as error:
+                message=str(error) or type(error).__name__
+                if info['error']!=message:self.log('Камера ровера: '+message,'error')
+                info['error']=message
+            try:await asyncio.wait_for(self.rover_camera_stop.wait(),max(.05,1-(time.monotonic()-started)))
+            except TimeoutError:pass
+
     def state(self):
         return {'token': self.token, 'drones': [{
             'id': key, 'name': spec['name'], 'camera_url': spec['camera'],
@@ -235,7 +304,8 @@ class Station:
             'states': self.inventory.states if self.inventory else {},
             'unmatched': self.inventory.unmatched if self.inventory else {},
             'events': list(self.events), 'jobs': list(self.jobs.values())[-20:],
-            'rover': {'available': False, 'reason': 'Адаптер управления ровером ещё не подключён'},
+            'rover': {'available': self.rover is not None, 'status': self.rover.status if self.rover else {},
+                      'camera': self.rover_camera_info, 'camera_mode': self.rover_camera_mode},
             'ws_port': self.robot.port}
 
 
@@ -299,12 +369,30 @@ async def api(request):
     data = await request.json()
     if not isinstance(data, dict):
         raise ValueError('Ожидается JSON-объект')
-    if action == 'command':
+    if action == 'rover':
+        if station.rover is None:raise ValueError('Ровер не настроен')
+        operation=data.get('operation')
+        try:
+            if operation=='begin':
+                result=await station.rover.begin(data['direction'],data.get('speed',.12),data.get('turn_speed',.4))
+            elif operation=='pulse':result=await station.rover.pulse(data['lease'])
+            elif operation=='stop':result=await station.rover.stop(data.get('lease'))
+            else:raise ValueError('Неизвестная команда ровера')
+        except ValueError:raise
+        except Exception as error:
+            return web.json_response({'error':'Ровер: '+(str(error) or type(error).__name__)},status=502)
+    elif action == 'rover-camera':
+        if data.get('mode')=='off':await station.stop_rover_camera()
+        else:await station.start_rover_camera(data['mode'])
+        result={'ok':True}
+    elif action == 'command':
         result = station.command(data['id'], data['command'], data.get('params', {}))
     elif action == 'mission':
         result = station.start_mission(data['routes'])
     elif action == 'stop':
         result = station.stop_all()
+        if station.rover:
+            station.launch('Остановка ровера', station.rover.stop())
     elif action == 'routes':
         routes = validate_routes(data['routes'])
         if set(routes) != set(station.config['drones']):
@@ -350,6 +438,7 @@ def create_app(station, robot_port=8000, robot_host='0.0.0.0', listen_robots=Tru
         station.session = ClientSession(trust_env=False)
         listener = None
         try:
+            if station.rover:await station.rover.start(station.session)
             if listen_robots:
                 station.robot.port = robot_port
                 listener = await serve(station.robot.handler, robot_host, robot_port, ping_interval=2, ping_timeout=5)
@@ -357,6 +446,8 @@ def create_app(station, robot_port=8000, robot_host='0.0.0.0', listen_robots=Tru
         finally:
             station.robot.stop_requested.set()
             station.camera_stop.set()
+            if station.rover:await station.rover.close()
+            await station.stop_rover_camera()
             await station.stop_cameras()
             await station.robot.stop_mission()
             for robot_id in station.manual:
