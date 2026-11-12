@@ -1,0 +1,5 @@
+image,detections,matched,seconds,tp,fp,fn
+YOLO/assets/test_match_1.png,2,0,1.759,,,
+YOLO/assets/test_mathc_2.png,4,0,0.102,,,
+YOLO/assets/test_match_3.jpg,5,0,0.125,,,
+YOLO/assets/test_match_4.jpg,4,0,0.097,,,

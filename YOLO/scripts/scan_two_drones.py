@@ -1,6 +1,8 @@
 """Merge one-second snapshots from two drones into an ArUco inventory."""
 from collections import deque
 import argparse
+import csv
+import io
 import asyncio
 import json
 import math
@@ -20,12 +22,15 @@ PRIORITY = {'пусто': 0, 'занято': 1, 'аномалия': 2}
 class Inventory:
     def __init__(self, map_path):
         self.expected = set()
+        self.coordinates = {}
         for line in Path(map_path).read_text().splitlines():
             if line.strip() and not line.lstrip().startswith('#'):
                 marker = int(line.split()[0])
                 if marker in self.expected:
                     raise ValueError(f'Повтор ID в карте: {marker}')
                 self.expected.add(marker)
+                values = line.split()
+                self.coordinates[marker] = [float(v) for v in values[2:5]]
         if not self.expected:
             raise ValueError('Карта не содержит меток')
         self.states = {}
@@ -73,6 +78,7 @@ class Inventory:
         atomic(output, ''.join(f'{marker}: {self.states[marker]}\n' for marker in sorted(self.states)))
         report = {'expected_ids': sorted(self.expected), 'read_ids': sorted(self.states),
                   'unread_ids': sorted(self.expected - self.states.keys()),
+                  'coordinates_m': self.coordinates, 'updated_at': time.time(),
                   'unknown_ids': sorted(self.unknown), 'complete': self.expected == self.states.keys(),
                   'seen_by': {key: sorted(value) for key, value in self.seen_by.items()}, 'sources': self.sources,
                   'unmatched_boxes': self.unmatched,
@@ -82,11 +88,18 @@ class Inventory:
                       'anomaly_score': sum(weight for label, weight in votes if label == 'аномалия')
                   } for marker, votes in self.votes.items()}}
         atomic(output.with_suffix('.coverage.json'), json.dumps(report, ensure_ascii=False, indent=2))
+        table = io.StringIO()
+        writer = csv.writer(table)
+        writer.writerow(['marker_id', 'state', 'x_m', 'y_m', 'z_m', 'sources'])
+        for marker in sorted(self.expected):
+            writer.writerow([marker, self.states.get(marker, 'не осмотрено'),
+                             *self.coordinates[marker], ';'.join(sorted(self.seen_by.get(marker, [])))])
+        atomic(output.with_name('inventory.csv'), table.getvalue())
 
 
 async def scan(args):
     inventory = Inventory(args.map)
-    processor = BoxProcessor(args.weights, args.device, args.conf, args.dictionary)
+    processor = BoxProcessor(args.weights, args.device, args.conf, args.dictionary, args.match_angle)
     cameras = [SnapshotCamera(url) for url in args.servers]
     inventory.save(args.output)
     rounds = 0
@@ -106,6 +119,8 @@ async def scan(args):
                 # One model instance, serialized inference; camera requests run concurrently.
                 output, result = await asyncio.to_thread(processor.process, frame)
                 inventory.update(url, result)
+                with args.output.with_name('observations.jsonl').open('a', encoding='utf-8') as journal:
+                    journal.write(json.dumps({'timestamp': time.time(), 'source': url, **result}, ensure_ascii=False) + '\n')
                 unmatched = len(inventory.unmatched[url])
                 print(f'{url}: найдено {len(result["detections"])}; без метки {unmatched}', flush=True)
                 if args.save_frames:
@@ -142,6 +157,7 @@ def main():
     parser.add_argument('--weights', type=Path, default=DEFAULT_BOX_WEIGHTS)
     parser.add_argument('--dictionary', default='DICT_4X4_1000')
     parser.add_argument('--device', default='cpu')
+    parser.add_argument('--match-angle', type=int, choices=(0,90,180,270), default=90)
     parser.add_argument('--conf', type=float, default=.25)
     parser.add_argument('--interval', type=float, default=1)
     parser.add_argument('--rounds', type=int, default=0, help='0 — до Ctrl+C')

@@ -1,0 +1,6 @@
+marker_id,map_x_m,map_y_m,measured_x_m,measured_y_m,error_m,measurement_date,operator
+100,-3.0,-1.5,,,,,
+104,0.0,-1.5,,,,,
+122,0.0,0.0,,,,,
+140,0.0,1.5,,,,,
+144,3.0,1.5,,,,,

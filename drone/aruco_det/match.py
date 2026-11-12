@@ -1,62 +1,35 @@
-import cv2
-from ultralytics import YOLO
-from shared.match_box import match_box_to_marker
-import sverk_interfaces
-from time import sleep
+"""Compatibility detector; live inventory is launched with python -m station."""
+from pathlib import Path
+import sys
 
-def scan(img, path_to_model):
-    dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
-    parameters = cv2.aruco.DetectorParameters()
-    detector = cv2.aruco.ArucoDetector(dictionary, parameters)
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'YOLO/scripts'))
+from box_detector import BoxProcessor, DEFAULT_BOX_WEIGHTS
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    corners, ids, rejected = detector.detectMarkers(gray)
+_processor = None
+_processor_path = None
 
-    markers = {}
 
-    if ids is not None:
-        centers = [
-            corner.reshape(4, 2).mean(axis=0).tolist()
-            for corner in corners
-        ]
-        markers = dict(zip(ids.flatten().tolist(), centers))
+def scan(img, path_to_model=DEFAULT_BOX_WEIGHTS):
+    """Return complete detections including ID, class and confidence; cache weights."""
+    global _processor, _processor_path
+    model_path = str(Path(path_to_model).resolve())
+    if _processor is None or model_path != _processor_path:
+        _processor = BoxProcessor(model_path, dictionary='DICT_4X4_1000')
+        _processor_path = model_path
+    _, result = _processor.process(img)
+    return [dict(box, box_center=(round((box['xyxy'][0] + box['xyxy'][2]) / 2),
+                                       round((box['xyxy'][1] + box['xyxy'][3]) / 2)))
+            for box in result['detections']]
 
-    model = YOLO(str(path_to_model))
-    result = model.predict(
-        source=img,
-        device="cpu",
-        verbose=False,
-    )[0]
 
-    res = []
-
-    for index, (x1, y1, x2, y2) in enumerate(result.boxes.xyxy.cpu().numpy(), start=1):
-        box_points = [
-            [float(x1), float(y1)],
-            [float(x2), float(y1)],
-            [float(x2), float(y2)],
-            [float(x1), float(y2)],
-        ]
-
-        marker_id = match_box_to_marker(box_points, markers, angle_deg=0)
-
-        box_center = (
-            int(round((x1 + x2) / 2)),
-            int(round((y1 + y2) / 2)),
-        )
-
-        res.append({
-            "marker_id": marker_id,
-            "box_center": box_center,
-        })
-
-    return res
-
-if __name__ == "__main__":
-    drone = sverk_interfaces.init(Nodename="fly_scan")
-
-    while True:
-        image = drone.image.take_picture(timeout=5.0)
-        print(scan(image, './yolo.pt'))
-        sleep(1)
-
+if __name__ == '__main__':
+    import sverk_interfaces
+    from time import sleep
+    drone = sverk_interfaces.init(Nodename='fly_scan')
+    try:
+        while True:
+            print(scan(drone.image.take_picture(timeout=5.0)))
+            sleep(1)
+    finally:
+        drone.close()

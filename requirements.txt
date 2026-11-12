@@ -3,3 +3,5 @@ opencv-contrib-python>=4.10,<5
 numpy>=1.26,<3
 mujoco==4.0.0
 websockets>=14,<18
+
+aiohttp>=3.10,<4

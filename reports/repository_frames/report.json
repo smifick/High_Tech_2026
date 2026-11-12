@@ -1,0 +1,349 @@
+{
+  "weights": "/workspace/work/High_Tech_2026/YOLO/scripts/best_for_classificator(2).pt",
+  "weights_sha256": "1f42b4bb00a44f3f3185a2affa3eba067f91bd7951a86d605a65fe6ee3e43600",
+  "dictionary": "DICT_4X4_1000",
+  "match_angle": 90,
+  "confidence": 0.25,
+  "imgsz": 640,
+  "frames": 4,
+  "labeled_frames": 0,
+  "totals_iou50": null,
+  "precision": null,
+  "recall": null,
+  "rows": [
+    {
+      "image": "YOLO/assets/test_match_1.png",
+      "sha256": "885648fdbb193bdaf465c78887f3a0300afa80dbf9678fd76ccc1e629e6acb25",
+      "detections": 2,
+      "matched": 0,
+      "seconds": 1.759,
+      "metrics_iou50": null,
+      "result": {
+        "markers": {
+          "113": [
+            837.25,
+            511.5
+          ],
+          "114": [
+            526.5,
+            537.5
+          ],
+          "115": [
+            236.5,
+            563.75
+          ],
+          "104": [
+            785.75,
+            243.5
+          ],
+          "105": [
+            512.25,
+            275.75
+          ],
+          "106": [
+            255.0,
+            304.5
+          ]
+        },
+        "detections": [
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.696134090423584,
+            "xyxy": [
+              612.2255859375,
+              460.44476318359375,
+              713.3248901367188,
+              567.1024780273438
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 1,
+            "class_name": "box_hitech_defect",
+            "confidence": 0.5052629113197327,
+            "xyxy": [
+              907.7014770507812,
+              440.0307922363281,
+              1027.369140625,
+              564.0526733398438
+            ],
+            "anomaly": true
+          }
+        ],
+        "counts": {
+          "box_hitech": 1,
+          "box_hitech_defect": 1
+        },
+        "ignored_detections": []
+      }
+    },
+    {
+      "image": "YOLO/assets/test_mathc_2.png",
+      "sha256": "9d8ae9b1c1f72d9f079f7786083fbe53c9bf112fc0ae1e762f34cbfff112d58a",
+      "detections": 4,
+      "matched": 0,
+      "seconds": 0.102,
+      "metrics_iou50": null,
+      "result": {
+        "markers": {
+          "122": [
+            828.25,
+            518.25
+          ],
+          "123": [
+            509.0,
+            529.75
+          ],
+          "124": [
+            210.25,
+            541.75
+          ],
+          "113": [
+            789.25,
+            244.25
+          ],
+          "114": [
+            508.75,
+            264.75
+          ],
+          "115": [
+            245.0,
+            281.75
+          ],
+          "105": [
+            509.25,
+            55.5
+          ],
+          "106": [
+            273.5,
+            76.25
+          ],
+          "107": [
+            49.0,
+            95.5
+          ]
+        },
+        "detections": [
+          {
+            "marker_id": null,
+            "class_id": 1,
+            "class_name": "box_hitech_defect",
+            "confidence": 0.791576623916626,
+            "xyxy": [
+              290.1778869628906,
+              192.2847137451172,
+              397.1087646484375,
+              323.2691650390625
+            ],
+            "anomaly": true
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7874355316162109,
+            "xyxy": [
+              259.16912841796875,
+              458.3609619140625,
+              361.6007995605469,
+              564.66455078125
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7069882750511169,
+            "xyxy": [
+              590.9300537109375,
+              187.52235412597656,
+              679.998291015625,
+              275.2808532714844
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 1,
+            "class_name": "box_hitech_defect",
+            "confidence": 0.6168853640556335,
+            "xyxy": [
+              853.830078125,
+              174.72622680664062,
+              956.4898071289062,
+              284.08160400390625
+            ],
+            "anomaly": true
+          }
+        ],
+        "counts": {
+          "box_hitech": 2,
+          "box_hitech_defect": 2
+        },
+        "ignored_detections": []
+      }
+    },
+    {
+      "image": "YOLO/assets/test_match_3.jpg",
+      "sha256": "47358c5f5ba355f9f81648c439954451d3105a37e42792b804be753e5429e4aa",
+      "detections": 5,
+      "matched": 0,
+      "seconds": 0.125,
+      "metrics_iou50": null,
+      "result": {
+        "markers": {
+          "100": [
+            419.0,
+            511.0
+          ]
+        },
+        "detections": [
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7996405363082886,
+            "xyxy": [
+              796.80908203125,
+              176.64532470703125,
+              952.077880859375,
+              323.3279724121094
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7632114291191101,
+            "xyxy": [
+              988.1539306640625,
+              477.67694091796875,
+              1137.8106689453125,
+              627.2536010742188
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7491883635520935,
+            "xyxy": [
+              495.6199951171875,
+              473.0429382324219,
+              620.8804931640625,
+              599.345947265625
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7333593964576721,
+            "xyxy": [
+              0.0,
+              641.991943359375,
+              132.24159240722656,
+              778.800537109375
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.6488306522369385,
+            "xyxy": [
+              0.1033782958984375,
+              217.335693359375,
+              73.656005859375,
+              358.35504150390625
+            ],
+            "anomaly": false
+          }
+        ],
+        "counts": {
+          "box_hitech": 5,
+          "box_hitech_defect": 0
+        },
+        "ignored_detections": []
+      }
+    },
+    {
+      "image": "YOLO/assets/test_match_4.jpg",
+      "sha256": "4c4545ce7c17f61f3346584a43cc84395b2fdd6d95eea0604d0c9a55e4d78cff",
+      "detections": 4,
+      "matched": 0,
+      "seconds": 0.097,
+      "metrics_iou50": null,
+      "result": {
+        "markers": {},
+        "detections": [
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.8045760989189148,
+            "xyxy": [
+              746.817626953125,
+              385.59765625,
+              926.090576171875,
+              552.8084106445312
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7847044467926025,
+            "xyxy": [
+              953.7042236328125,
+              721.8805541992188,
+              1131.1778564453125,
+              898.9088745117188
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 0,
+            "class_name": "box_hitech",
+            "confidence": 0.7493866086006165,
+            "xyxy": [
+              410.08795166015625,
+              714.1915283203125,
+              555.2019653320312,
+              851.2574462890625
+            ],
+            "anomaly": false
+          },
+          {
+            "marker_id": null,
+            "class_id": 1,
+            "class_name": "box_hitech_defect",
+            "confidence": 0.36710983514785767,
+            "xyxy": [
+              251.14288330078125,
+              644.30810546875,
+              425.619384765625,
+              875.95166015625
+            ],
+            "anomaly": true
+          }
+        ],
+        "counts": {
+          "box_hitech": 3,
+          "box_hitech_defect": 1
+        },
+        "ignored_detections": []
+      }
+    }
+  ]
+}

@@ -26,7 +26,7 @@ class MarkerFilterTests(unittest.TestCase):
     def test_both_classes_filtered_before_counts_and_inventory(self):
         for false_class in (0,1):
             processor=BoxProcessor.__new__(BoxProcessor)
-            processor.device='cpu'; processor.conf=.25
+            processor.device='cpu'; processor.conf=.25; processor.match_angle=90
             result=SimpleNamespace(names={0:'box_hitech',1:'box_hitech_defect'},
                 boxes=SimpleNamespace(xyxy=tensor([[10,10,30,30],[10,32,30,52]]),
                     conf=tensor([.9,.8]), cls=tensor([false_class,1])))

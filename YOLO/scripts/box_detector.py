@@ -30,7 +30,7 @@ def marker_overlapping_box(xyxy, marker_polygons, min_box_coverage=0.5):
 
 
 class BoxProcessor:
-    def __init__(self, weights=DEFAULT_BOX_WEIGHTS, device='cpu', conf=.25, dictionary='DICT_4X4_250'):
+    def __init__(self, weights=DEFAULT_BOX_WEIGHTS, device='cpu', conf=.25, dictionary='DICT_4X4_250', match_angle=MATCH_ANGLE_DEG):
         if not Path(weights).is_file():
             raise FileNotFoundError(f'Веса не найдены: {weights}')
         self.model = YOLO(str(weights))
@@ -41,6 +41,7 @@ class BoxProcessor:
         self.detector = cv2.aruco.ArucoDetector(
             cv2.aruco.getPredefinedDictionary(getattr(cv2.aruco, dictionary)),
             cv2.aruco.DetectorParameters())
+        self.match_angle = match_angle
         self.device = device
         self.conf = conf
 
@@ -74,7 +75,7 @@ class BoxProcessor:
             counts[name] += 1
             x1, y1, x2, y2 = xyxy
             marker_id = match_box_to_marker(
-                [[x1, y1], [x2, y1], [x2, y2], [x1, y2]], markers, angle_deg=MATCH_ANGLE_DEG)
+                [[x1, y1], [x2, y1], [x2, y2], [x1, y2]], markers, angle_deg=self.match_angle)
             color = (0, 0, 255) if name == 'box_hitech_defect' else (0, 200, 0)
             cv2.rectangle(output, (round(x1), round(y1)), (round(x2), round(y2)), color, 2)
             label = f'{name} {confidence:.2f} -> ArUco {marker_id if marker_id is not None else "None"}'
