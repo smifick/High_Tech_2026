@@ -1,0 +1,38 @@
+{
+  "dock_mode": "lidar",
+  "dock_pose": [
+    5.973,
+    4.861,
+    25
+  ],
+  "mouth_pose": [
+    6.15,
+    5.45,
+    33
+  ],
+  "exit_waypoints": [
+    [
+      6.213,
+      5.051
+    ]
+  ],
+  "return_waypoints": [
+    [
+      6.28,
+      5.28
+    ],
+    [
+      6.213,
+      5.051
+    ]
+  ],
+  "box_offset_m": null,
+  "box_radius_m": 0.26,
+  "clearance_m": 0.23,
+  "camera_distance_m": 0.72,
+  "dock_search_radius_m": 0.3,
+  "lidar_offset_m": [
+    0.0662,
+    0.0
+  ]
+}

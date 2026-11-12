@@ -3,6 +3,7 @@ import asyncio
 import json
 import logging
 import math
+import threading
 import time
 
 import sverk_interfaces
@@ -24,11 +25,20 @@ class DroneClient:
         self.control = drone.control
         self.in_flight = False
         self.takeoff_attempted = False
+        self.shutdown = threading.Event()
+        self.sdk_lock = threading.Lock()
 
     def navigate(self, x, y, z=1.7, yaw=0.0, frame_id="aruco_map"):
+        with self.sdk_lock:
+            self._navigate(x, y, z, yaw, frame_id)
+
+    def _navigate(self, x, y, z, yaw, frame_id):
         x, y, z, yaw = map(float, (x, y, z, yaw))
         if not all(math.isfinite(value) for value in (x, y, z, yaw)):
             raise ValueError("Координаты и yaw должны быть конечными числами")
+
+        if self.shutdown.is_set():
+            raise RuntimeError("Соединение закрывается")
 
         if not self.in_flight:
             # Моторы могут включиться, даже если вызов взлёта вернёт ошибку.
@@ -36,7 +46,7 @@ class DroneClient:
             result = self.control.navigate_wait(
                 x=0.0,
                 y=0.0,
-                z=1.7,
+                z=1.0,
                 frame_id="map",
                 auto_arm=True,
                 speed=0.3,
@@ -51,6 +61,9 @@ class DroneClient:
 
             self.in_flight = True
 
+        if self.shutdown.is_set():
+            raise RuntimeError("Соединение закрывается до начала перелёта")
+
         result = self.control.navigate_wait(
             x=x,
             y=y,
@@ -64,6 +77,10 @@ class DroneClient:
         check_result(result, "Навигация")
 
     def land(self):
+        with self.sdk_lock:
+            self._land()
+
+    def _land(self):
         if not self.takeoff_attempted:
             return
 
@@ -171,6 +188,7 @@ class DroneClient:
                 else:
                     log.warning("Соединение с сервером закрыто")
             finally:
+                self.shutdown.set()
                 receive_task.cancel()
                 closed_task.cancel()
                 await asyncio.gather(
@@ -194,6 +212,7 @@ def main():
     except KeyboardInterrupt:
         log.info("Остановка клиента")
     finally:
+        client.shutdown.set()
         try:
             client.land()
         except Exception:

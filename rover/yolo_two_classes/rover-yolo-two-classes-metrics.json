@@ -1,0 +1,131 @@
+{
+  "test_images": 23,
+  "class_names": [
+    "box_hitech",
+    "box_hitech_defect"
+  ],
+  "models": {
+    "original": {
+      "map50": 0.0,
+      "map50_95": 0.0,
+      "class_ap50": [
+        0.0,
+        0.0
+      ],
+      "holdout_rover_frame": [],
+      "holdout_box_check": {
+        "left": {
+          "expected": "box_hitech_defect",
+          "prediction": null,
+          "correct_at_0_60": false
+        },
+        "right": {
+          "expected": "box_hitech",
+          "prediction": null,
+          "correct_at_0_60": false
+        }
+      }
+    },
+    "pilot": {
+      "map50": 0.09533177881609832,
+      "map50_95": 0.023629522113694772,
+      "class_ap50": [
+        0.07322145140679207,
+        0.11744210622540457
+      ],
+      "holdout_rover_frame": [
+        {
+          "class": "box_hitech",
+          "confidence": 0.2476,
+          "xyxy": [
+            262,
+            567,
+            641,
+            826
+          ]
+        },
+        {
+          "class": "box_hitech",
+          "confidence": 0.2194,
+          "xyxy": [
+            717,
+            504,
+            1076,
+            823
+          ]
+        }
+      ],
+      "holdout_box_check": {
+        "left": {
+          "expected": "box_hitech_defect",
+          "prediction": {
+            "class": "box_hitech",
+            "confidence": 0.2476,
+            "xyxy": [
+              262,
+              567,
+              641,
+              826
+            ]
+          },
+          "correct_at_0_60": false
+        },
+        "right": {
+          "expected": "box_hitech",
+          "prediction": {
+            "class": "box_hitech",
+            "confidence": 0.2194,
+            "xyxy": [
+              717,
+              504,
+              1076,
+              823
+            ]
+          },
+          "correct_at_0_60": false
+        }
+      }
+    },
+    "continued": {
+      "map50": 0.3738894321338974,
+      "map50_95": 0.1792760727038919,
+      "class_ap50": [
+        0.36156867015098726,
+        0.38621019411680757
+      ],
+      "holdout_rover_frame": [
+        {
+          "class": "box_hitech",
+          "confidence": 0.756,
+          "xyxy": [
+            692,
+            446,
+            1100,
+            840
+          ]
+        }
+      ],
+      "holdout_box_check": {
+        "left": {
+          "expected": "box_hitech_defect",
+          "prediction": null,
+          "correct_at_0_60": false
+        },
+        "right": {
+          "expected": "box_hitech",
+          "prediction": {
+            "class": "box_hitech",
+            "confidence": 0.756,
+            "xyxy": [
+              692,
+              446,
+              1100,
+              840
+            ]
+          },
+          "correct_at_0_60": true
+        }
+      }
+    }
+  }
+}

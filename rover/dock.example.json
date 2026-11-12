@@ -1,0 +1,10 @@
+{
+  "dock_pose": null,
+  "mouth_pose": null,
+  "box_offset_m": null,
+  "box_radius_m": 0.26,
+  "clearance_m": 0.23,
+  "camera_distance_m": 0.72,
+  "dock_search_radius_m": 0.55,
+  "lidar_offset_m": [0.0662, 0.0]
+}

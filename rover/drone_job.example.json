@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "mission_id": "attempt-001",
+  "boxes": [
+    {"marker_id": 112, "anomaly": true},
+    {"marker_id": 122, "anomaly": false},
+    {"marker_id": 130, "anomaly": true, "offset_m": [0.30, 0.10]}
+  ]
+}

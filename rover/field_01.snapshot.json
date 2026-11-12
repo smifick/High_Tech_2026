@@ -1,0 +1,51 @@
+{
+  "map": {
+    "path": "archive/field_01_20261111_125402/map.yaml",
+    "name": "field_01",
+    "valid": true,
+    "revision": "1794390472624986073-1794390472624986073",
+    "image_url": "/api/maps/image?map=archive/field_01_20261111_125402/map.yaml",
+    "resolution": 0.05,
+    "origin": [
+      2.419,
+      2.0,
+      0.0
+    ],
+    "negate": 0,
+    "occupied_thresh": 0.65,
+    "free_thresh": 0.196,
+    "width_px": 197,
+    "height_px": 196
+  },
+  "places": {
+    "map": "archive/field_01_20261111_125402/map.yaml",
+    "revision": 5,
+    "places": [
+      {
+        "name": "100",
+        "x": 5.92,
+        "y": 5.32,
+        "yaw": 0.5689773361501514
+      },
+      {
+        "name": "108",
+        "x": 11.24,
+        "y": 8.12,
+        "yaw": 0.5410520681182421
+      },
+      {
+        "name": "136",
+        "x": 4.5,
+        "y": 7.99,
+        "yaw": 0.445058959258554
+      },
+      {
+        "name": "144",
+        "x": 9.8,
+        "y": 10.82,
+        "yaw": 0.4642575810304917
+      }
+    ]
+  },
+  "image_sha256": "93cc9b889d36396f7467b827071199bcc42500acee58856ca3c6d468fd80c574"
+}
