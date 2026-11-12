@@ -1,4 +1,4 @@
-"""Compatibility detector; live inventory is launched with python -m station."""
+"""Compatibility detector; live UI is launched with python3 web_station/server.py."""
 from pathlib import Path
 import sys
 

@@ -1,4 +1,3 @@
-import argparse
 import asyncio
 import json
 from pathlib import Path
@@ -6,17 +5,16 @@ import sys
 import tempfile
 import unittest
 
-from aiohttp.test_utils import TestClient, TestServer
 from websockets.asyncio.client import connect
 from websockets.asyncio.server import serve
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'YOLO/scripts'))
-from station.__main__ import Station, WsServer
+sys.path.insert(0, str(ROOT/'drone/aruco_nav'))
+from ws_control import WsServer
 from mission import load_mission
 from scan_two_drones import Inventory, DEFAULT_MAP
 from field_report import score
-from aiohttp import web
 
 
 class ArtifactTests(unittest.TestCase):
@@ -80,45 +78,3 @@ class FlightTests(unittest.IsolatedAsyncioTestCase):
                 await ws.wait_closed()
                 await asyncio.sleep(.01)
                 self.assertNotIn('test', station.clients)
-
-
-class WebTests(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        args = argparse.Namespace(routes=ROOT/'drone/aruco_nav/routes.example.json', output=Path(self.tmp.name),
-                                  ws_host='127.0.0.1', ws_port=0)
-        self.station = Station(args)
-        app = web.Application()
-        app.add_routes([web.get('/',self.station.index), web.get('/api/state',self.station.state),
-                        web.post('/api/{action}', self.station.action), web.get('/download/{name}', self.station.download)])
-        self.client = TestClient(TestServer(app))
-        await self.client.start_server()
-
-    async def asyncTearDown(self):
-        await self.client.close()
-        self.tmp.cleanup()
-
-    async def test_ui_and_state_without_connected_hardware(self):
-        response = await self.client.get('/')
-        self.assertIn('Инвентаризация', await response.text())
-        response = await self.client.get('/api/state')
-        data = await response.json()
-        self.assertEqual(data['connected'], [])
-        self.assertEqual(data['scanner'], 'остановлен')
-        self.assertIsNone(data['coverage'])
-
-    async def test_start_rejected_without_both_drones_or_from_foreign_site(self):
-        response = await self.client.post('/api/start')
-        self.assertEqual(response.status, 403)
-        response = await self.client.post('/api/start', headers={'X-Station-Action':'1'})
-        self.assertEqual(response.status, 409)
-        response = await self.client.post('/api/start', headers={'X-Station-Action':'1','Sec-Fetch-Site':'cross-site'})
-        self.assertEqual(response.status, 403)
-
-    async def test_only_allowlisted_files_downloaded(self):
-        (self.station.attempt/'inventory.csv').write_text('marker_id,state\n100,пусто\n')
-        response = await self.client.get('/download/inventory.csv')
-        self.assertEqual(response.status, 200)
-        self.assertIn('100,пусто', await response.text())
-        response = await self.client.get('/download/scan.log')
-        self.assertEqual(response.status, 404)
